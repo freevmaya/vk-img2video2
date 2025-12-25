@@ -1,0 +1,41 @@
+# Файл: vk-img2video/.htaccess
+RewriteEngine On
+
+# Перенаправление на HTTPS если не локальная разработка
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^localhost
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Запрет доступа к скрытым файлам
+RedirectMatch 404 /\..*$
+
+# Защита конфигурационных файлов
+<FilesMatch "\.(php|inc|config|sql)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+<Files "config.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Разрешение доступа только к frontend
+RewriteRule ^backend/ - [F,L]
+
+# Маршрутизация для API
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ frontend/api/$1 [L,QSA]
+
+# Маршрутизация для assets
+RewriteRule ^assets/(.*)$ frontend/assets/$1 [L]
+
+# Главная страница
+RewriteRule ^$ frontend/index.php [L]
+
+# Защита от SQL инъекций
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ index.php [F,L]

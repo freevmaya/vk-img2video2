@@ -1,0 +1,42 @@
+.vblock {
+	padding: 1.5rem !important;
+}
+
+.row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    gap: 0.8rem;
+}
+
+.app-header {
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 30px;
+}
+
+.video-card .p-3 {
+    position: relative;
+}
+
+.p-3, .video-overlay {
+    transition: opacity 0.3s ease;
+}
+
+.video-overlay {
+    position: absolute;
+    width: calc(100% - 2rem);
+    top: 1rem;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 2;
+}
+
+.video-card:hover .video-overlay {
+    opacity: 1;
+}
+
+.video-card:hover .video-info {
+    opacity: 0;
+}

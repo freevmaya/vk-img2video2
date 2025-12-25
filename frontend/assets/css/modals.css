@@ -1,0 +1,154 @@
+/* Стили для модальных окон */
+
+/* Модальное окно соглашения */
+#agreementModal .modal-content {
+    max-height: 90vh;
+    min-height: 500px;
+}
+
+#agreementModal .modal-body {
+    padding: 0;
+    overflow-y: auto;
+    max-height: 65vh;
+}
+
+.agreement-content {
+    padding: 1.5rem;
+}
+
+.agreement-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.agreement-section:last-child {
+    border-bottom: none;
+}
+
+.agreement-section h3 {
+    color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+}
+
+.agreement-section h3::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+/* Для печати */
+@media print {
+    .agreement-content {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .modal-header,
+    .modal-footer {
+        display: none !important;
+    }
+}
+
+/* Загрузка контента */
+.agreement-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.agreement-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Кастомный скроллбар для модального окна */
+#agreementModal .modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+#agreementModal .modal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#agreementModal .modal-body::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 3px;
+}
+
+/* Кнопки в модальном окне */
+.modal-footer .btn {
+    min-width: 120px;
+}
+
+.modal-dialog {
+    max-width: min(850px, calc(100% - 1em)) !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    #agreementModal .modal-dialog {
+        margin: 10px;
+    }
+    
+    .agreement-content {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .modal-footer .btn {
+        flex: 1;
+        min-width: auto;
+    }
+}
+
+.privacy-content {
+    padding: 1.5rem;
+}
+
+.privacy-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.privacy-section:last-child {
+    border-bottom: none;
+}
+
+.data-card, .right-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+}
+
+.data-card:hover, .right-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.security-measures {
+    background: rgba(0, 255, 0, 0.03);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.contact-info {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(159, 122, 234, 0.1));
+    border-radius: 15px;
+    border: 1px solid var(--accent-primary);
+}

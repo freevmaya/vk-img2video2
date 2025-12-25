@@ -1,0 +1,65 @@
+@media (min-width: 768px) {
+    .col-md-6 {
+        width: calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 700px) { 
+    .video-card {
+        width: calc(50% - 0.5rem);
+    }
+}
+
+@media (max-width: 450px) { 
+    .video-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .glass-container {
+        padding: 15px;
+    }
+    
+    .app-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .upload-method-card {
+        margin-bottom: 15px;
+    }
+    
+    .payment-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 450px) {
+    .upload-section .vmb-4 {
+        width: calc(50% - 0.4rem);
+    }
+}
+
+@media (min-width: 380px) {
+    .image-preview {
+        max-width: calc(100% - 1rem);
+    }
+}
+
+@media (min-width: 430px) {
+    .image-preview {
+        max-width: calc(50% - 1rem);
+    }
+}
+
+@media (min-width: 590px) {
+    .image-preview {
+        max-width: calc(33% - 1rem);
+    }
+}
+
+@media (min-width: 750px) {
+    .image-preview {
+        max-width: calc(25% - 1rem);
+    }
+}

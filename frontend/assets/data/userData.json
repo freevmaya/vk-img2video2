@@ -1,0 +1,23 @@
+{
+    "id": 44108006,
+    "bdate": "7.9.1969",
+    "bdate_visibility": 1,
+    "city": {
+        "id": 158,
+        "title": "Челябинск"
+    },
+    "country": {
+        "id": 1,
+        "title": "Россия"
+    },
+    "timezone": 5,
+    "photo_200": "https://sun13-2.userapi.com/s/v1/ig2/fnzS8ddaVfc1sT0Te-gZ-Sk6uO_ivH0o_IOMPIuEO1FRzW36IG7AcJX95zD3LNnHgXgmUOAAG8ckF07NUNBHKXeX.jpg?quality=95&crop=468,0,1152,1152&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&ava=1&u=50fXIpCaN-vLhxQAfWLtI3slAHkqiqyVQKaNlKRSjqM&cs=200x200",
+    "photo_max_orig": "https://sun13-2.userapi.com/s/v1/ig2/fnzS8ddaVfc1sT0Te-gZ-Sk6uO_ivH0o_IOMPIuEO1FRzW36IG7AcJX95zD3LNnHgXgmUOAAG8ckF07NUNBHKXeX.jpg?quality=95&crop=468,0,1152,1152&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&ava=1&u=50fXIpCaN-vLhxQAfWLtI3slAHkqiqyVQKaNlKRSjqM&cs=240x240",
+    "sex": 2,
+    "photo_100": "https://sun13-2.userapi.com/s/v1/ig2/fnzS8ddaVfc1sT0Te-gZ-Sk6uO_ivH0o_IOMPIuEO1FRzW36IG7AcJX95zD3LNnHgXgmUOAAG8ckF07NUNBHKXeX.jpg?quality=95&crop=468,0,1152,1152&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&ava=1&u=50fXIpCaN-vLhxQAfWLtI3slAHkqiqyVQKaNlKRSjqM&cs=100x100",
+    "photo_base": "https://sun13-2.userapi.com/s/v1/ig2/fnzS8ddaVfc1sT0Te-gZ-Sk6uO_ivH0o_IOMPIuEO1FRzW36IG7AcJX95zD3LNnHgXgmUOAAG8ckF07NUNBHKXeX.jpg?quality=95&crop=468,0,1152,1152&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&ava=1&u=50fXIpCaN-vLhxQAfWLtI3slAHkqiqyVQKaNlKRSjqM",
+    "first_name": "Вадим",
+    "last_name": "Фролов",
+    "can_access_closed": true,
+    "is_closed": true
+}

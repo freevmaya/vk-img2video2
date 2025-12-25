@@ -1,0 +1,992 @@
+{
+    "response": {
+        "count": 26,
+        "items": [
+            {
+                "id": 294622412,
+                "owner_id": 44108006,
+                "size": 17,
+                "title": "Дагестан 2023",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1684042798,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457241550,
+                "thumb_is_last": 1,
+                "updated": 1684042924
+            },
+            {
+                "id": 286954053,
+                "owner_id": 44108006,
+                "size": 32,
+                "title": "Чегем-Избербаш, июль 2022",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1658197493,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457241401,
+                "thumb_is_last": 1,
+                "updated": 1658198838
+            },
+            {
+                "id": 282275684,
+                "owner_id": 44108006,
+                "size": 89,
+                "title": "Чегем-Дагистан 2021",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1629550101,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457241249,
+                "thumb_is_last": 1,
+                "updated": 1630731037
+            },
+            {
+                "id": 276794530,
+                "owner_id": 44108006,
+                "size": 24,
+                "title": "2020 Осень",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1601871637,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457240886,
+                "thumb_is_last": 1,
+                "updated": 1601871873
+            },
+            {
+                "id": 276246206,
+                "owner_id": 44108006,
+                "size": 119,
+                "title": "Август 2020, Кавказ",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1598873292,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457240955,
+                "thumb_is_last": 1,
+                "updated": 1602848997
+            },
+            {
+                "id": 267913498,
+                "owner_id": 44108006,
+                "size": 34,
+                "title": "Полеты в Словении",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1567951217,
+                "description": "Толмин, Кабарид, Италия",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457240390,
+                "thumb_is_last": 1,
+                "updated": 1567951264
+            },
+            {
+                "id": 266792895,
+                "owner_id": 44108006,
+                "size": 15,
+                "title": "Словения",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1565264422,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457240195,
+                "thumb_is_last": 1,
+                "updated": 1565264502
+            },
+            {
+                "id": 235072020,
+                "owner_id": 44108006,
+                "size": 11,
+                "title": "Харлуши-Марксист-Чубары-Альмеево",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1470728928,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 456239125,
+                "thumb_is_last": 1,
+                "updated": 1498933068
+            },
+            {
+                "id": 222071500,
+                "owner_id": 44108006,
+                "size": 68,
+                "title": "Лето 2015",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1444384920,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 381917405,
+                "thumb_is_last": 1,
+                "updated": 1444389845
+            },
+            {
+                "id": 222038424,
+                "owner_id": 44108006,
+                "size": 26,
+                "title": "Чегем, Осень",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1444321083,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 381836254,
+                "thumb_is_last": 1,
+                "updated": 1444323198
+            },
+            {
+                "id": 217301958,
+                "owner_id": 44108006,
+                "size": 54,
+                "title": "Кавказ 2015",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1435410070,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 372068110,
+                "updated": 1444119157
+            },
+            {
+                "id": 212930746,
+                "owner_id": 44108006,
+                "size": 15,
+                "title": "Чудеса Аушкуля",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1427218577,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 366658781,
+                "updated": 1433170925
+            },
+            {
+                "id": 211755442,
+                "owner_id": 44108006,
+                "size": 8,
+                "title": "Космос",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1425061784,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 354143099,
+                "thumb_is_last": 1,
+                "updated": 1425061813
+            },
+            {
+                "id": 211089809,
+                "owner_id": 44108006,
+                "size": 24,
+                "title": "Касарги",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1423914191,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 356107778,
+                "thumb_is_last": 1,
+                "updated": 1426647904
+            },
+            {
+                "id": 202200821,
+                "owner_id": 44108006,
+                "size": 3,
+                "title": "Горы, полеты, избранное",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1410796061,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 338529229,
+                "thumb_is_last": 1,
+                "updated": 1411060548
+            },
+            {
+                "id": 189153933,
+                "owner_id": 44108006,
+                "size": 48,
+                "title": "Непал 2014",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1393649492,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 324248854,
+                "thumb_is_last": 1,
+                "updated": 1395816571
+            },
+            {
+                "id": 185311308,
+                "owner_id": 44108006,
+                "size": 4,
+                "title": "Аушкуль 2014",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1389717958,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 318485566,
+                "thumb_is_last": 1,
+                "updated": 1389717992
+            },
+            {
+                "id": 181519637,
+                "owner_id": 44108006,
+                "size": 70,
+                "title": "Бир",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1383273923,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 437086666,
+                "thumb_is_last": 1,
+                "updated": 1477838344
+            },
+            {
+                "id": 180782854,
+                "owner_id": 44108006,
+                "size": 49,
+                "title": "Чегем 2013 (сентябрь)",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1381899785,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 339830259,
+                "thumb_is_last": 1,
+                "updated": 1412358063
+            },
+            {
+                "id": 173814687,
+                "owner_id": 44108006,
+                "size": 17,
+                "title": "Чегем, май 2013",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1368535384,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 302205646,
+                "thumb_is_last": 1,
+                "updated": 1368535424
+            },
+            {
+                "id": 170280345,
+                "owner_id": 44108006,
+                "size": 9,
+                "title": "Непал 2013",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1362108523,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 297693953,
+                "thumb_is_last": 1,
+                "updated": 1362109082
+            },
+            {
+                "id": 156256542,
+                "owner_id": 44108006,
+                "size": 85,
+                "title": "Чегемское ущелье, гора Зинке",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1335772918,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 288950320,
+                "updated": 1349440158
+            },
+            {
+                "id": 139603996,
+                "owner_id": 44108006,
+                "size": 20,
+                "title": "Кандры",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1312207992,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 265297721,
+                "thumb_is_last": 1,
+                "updated": 1312348347
+            },
+            {
+                "id": 125333665,
+                "owner_id": 44108006,
+                "size": 3,
+                "title": "privace",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1294574278,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": false,
+                "is_locked": true,
+                "privacy_comment": {
+                    "category": "only_me",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "only_me",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 208310875,
+                "thumb_is_last": 1,
+                "updated": 1307354803
+            },
+            {
+                "id": 111424008,
+                "owner_id": 44108006,
+                "size": 123,
+                "title": "Аушкуль",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1275930751,
+                "description": "",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 457241572,
+                "thumb_is_last": 1,
+                "updated": 1688488289
+            },
+            {
+                "id": 102158220,
+                "owner_id": 44108006,
+                "size": 2,
+                "title": "Мои граффити",
+                "feed_disabled": 0,
+                "feed_has_pinned": 0,
+                "created": 1263722509,
+                "description": "Граффити, нарисованные в приложении \"Рисовалка на стену друзьям\" http://vkontakte.ru/app1759103",
+                "can_delete": true,
+                "can_include_to_feed": true,
+                "is_locked": false,
+                "privacy_comment": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "privacy_view": {
+                    "category": "friends",
+                    "lists": {
+                        "allowed": [],
+                        "excluded": []
+                    },
+                    "owners": {
+                        "allowed": [],
+                        "excluded": []
+                    }
+                },
+                "thumb_id": 271237530,
+                "thumb_is_last": 1,
+                "updated": 1321603547
+            }
+        ]
+    }
+}

@@ -1,0 +1,57 @@
+:root {
+	--bs-body-font-size: 0.8rem;
+}
+
+.method-icon {
+	font-size: 2rem;
+}
+
+.h3, h3 {
+    font-size: calc(1rem + .4vw);
+}
+
+.vblock {
+	padding: 0.8rem !important;
+}
+
+.row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    gap: 0.5rem;
+}
+
+p {
+	margin-bottom: 0;
+}
+
+#albumsPreviewContainer {
+	padding-bottom: 0;
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.app-header {
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 1rem;
+}
+
+.video-overlay {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-overlay button {
+    padding: 0.4rem;
+}
+
+.video-actions {
+	margin-top: 0.5rem;
+}
+
+.app-header .d-flex {
+	flex-direction: row-reverse;
+}
