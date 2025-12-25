@@ -745,9 +745,6 @@ class WebSocketServer {
                 'INNER JOIN task t ON t.hash = kt.task_id ' +
                 `WHERE kt.processed = 0 AND t.user_id IN (${keys})`
             );
-
-            console.log(keys);
-            console.log(rows);
             
             for (const item of rows) {
                 if (item.user_id) {
