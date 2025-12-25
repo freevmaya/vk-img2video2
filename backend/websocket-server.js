@@ -7,7 +7,7 @@ const url = require('url');
 const mysql = require('mysql2/promise');
 const axios = require('axios');
 const fs = require('fs');
-const path = require('path');
+const { VK } = require('vk-io');
 
 const config = require('../config.json');
 
@@ -134,6 +134,11 @@ class WebSocketServer {
         this.reconnectionAttempts = 0;
         this.maxReconnectionAttempts = 10;
         this.downloadPromises = {};
+
+        this.vk = new VK({
+            appId: this.config.vk.app_id,
+            token: this.config.vk.VK_SERVICE_TOKEN
+        });
         
         this.init();
         if (process.send) {
@@ -172,7 +177,7 @@ class WebSocketServer {
         
         this.setupEventHandlers();
         this.start();
-    }    
+    }  
 
     async connectToDatabase() {
         try {
@@ -289,6 +294,8 @@ class WebSocketServer {
         _ws.on('close', () => this.handleDisconnect(userId));
         _ws.on('error', (error) => this.handleError(userId, error));
 
+        this.sendNotificationVK(userId, "Проба!");
+
         this.getAvgTaskTime()
             .then((avgDelta)=>{                
                 // Отправляем подтверждение подключения
@@ -315,6 +322,28 @@ class WebSocketServer {
                     tasks: rows
                 }))
             });
+    }
+
+    sendNotificationVK(userId, message) {
+        this.executeQuery("SELECT * FROM users WHERE id = ?", [userId])
+            .then((rows)=>{
+                if (rows.length > 0) {
+                    this.sendNotification(rows[0].vk_user_id, message);
+                }
+            })
+    }
+
+    async function sendNotification(vk_user_id, message) {
+        try {
+            await vk.api.notifications.sendMessage({
+              user_id: vk_user_id,
+              message: message,
+              // Другие параметры, если есть
+            });
+            console.log(`Уведомление отправлено пользователю ${vk_user_id}`);
+            } catch (error) {
+            console.error(`Ошибка отправки уведомления ${vk_user_id}:`, error);
+        }
     }
 
     setupEventHandlers() {
@@ -727,13 +756,14 @@ class WebSocketServer {
         }
     }
 
+
     downloadAttempt(ws, item) {
 
         if (!this.downloadPromises[item.task_id]) {
 
             console.log(`Attempting download video ${item.result_url}`);
             let promise = downloadWithAxios(item.result_url, this.RESULT_PATH, item.task_id);
-            
+
             promise.then(async (result) => {
                     if (result.status) {
                         await this.setProcessedTask(ws, item);

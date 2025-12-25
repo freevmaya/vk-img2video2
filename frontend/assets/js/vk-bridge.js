@@ -278,7 +278,7 @@ class VKBridgeHandler {
             scrollFromParent($(this.notification));
             
             // Автоматическое удаление через 5 секунд
-            setTimeout(() => this.closeNotification.bind(this), 5000);
+            setTimeout(this.closeNotification.bind(this), 5000);
         }
     }
 
