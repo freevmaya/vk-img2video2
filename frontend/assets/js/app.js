@@ -233,6 +233,8 @@ class Image2VideoApp {
                     
                     this.showNotification('Задание на генерацию создано!', 'success');
                     this.addTaskToList(result.hash);
+
+                    vkBridgeHandler.updateNotificationsAllowed();
                     
                     // Обновляем баланс
                     this.updateBalance(balance - price);

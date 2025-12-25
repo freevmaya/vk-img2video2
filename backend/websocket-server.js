@@ -294,7 +294,7 @@ class WebSocketServer {
         _ws.on('close', () => this.handleDisconnect(userId));
         _ws.on('error', (error) => this.handleError(userId, error));
 
-        this.sendNotificationVK(userId, "Проба!");
+        this.sendUserNotify(userId, "Проба!");
 
         this.getAvgTaskTime()
             .then((avgDelta)=>{                
@@ -324,26 +324,27 @@ class WebSocketServer {
             });
     }
 
-    sendNotificationVK(userId, message) {
+    sendUserNotify(userId, message) {
         this.executeQuery("SELECT * FROM users WHERE id = ?", [userId])
             .then((rows)=>{
                 if (rows.length > 0) {
-                    this.sendNotification(rows[0].vk_user_id, message);
+                    this.sendUserNotifyVK(rows[0].vk_user_id, message);
                 }
             })
     }
 
-    async function sendNotification(vk_user_id, message) {
-        try {
-            await vk.api.notifications.sendMessage({
-              user_id: vk_user_id,
-              message: message,
-              // Другие параметры, если есть
-            });
-            console.log(`Уведомление отправлено пользователю ${vk_user_id}`);
-            } catch (error) {
-            console.error(`Ошибка отправки уведомления ${vk_user_id}:`, error);
-        }
+    sendUserNotifyVK(vk_user_id, message) {
+        this.vk.api.notifications.sendMessage({
+            user_ids: vk_user_id,
+            message: message
+        })
+        .then((response)=>{
+            if (!response[0].status)
+                console.log(response);
+        })
+        .catch((error)=>{
+            console.error(error);
+        });
     }
 
     setupEventHandlers() {
