@@ -294,7 +294,7 @@ class WebSocketServer {
         _ws.on('close', () => this.handleDisconnect(userId));
         _ws.on('error', (error) => this.handleError(userId, error));
 
-        this.sendUserNotify(userId, "Проба!");
+        //this.sendUserNotify(userId, "Проба!");
 
         this.getAvgTaskTime()
             .then((avgDelta)=>{                
