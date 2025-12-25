@@ -287,11 +287,13 @@ class Image2VideoApp {
             if (!videosGrid.length || !videosSection.length) return;
 
             let url = this.getVideoUrl(hash);
+            let thumbnail_url = this.getThumbnailUrl(hash);
             
             const videoCard = $(`
                 <div class="video-card" id="${block_id}">
                     <div class="video-preview">
-                        <video controls class="w-100">
+                        <img src="${thumbnail_url}"/>
+                        <video controls class="w-100" style="display: none">
                             <source src="${url}" type="video/mp4">
                             Ваш браузер не поддерживает видео.
                         </video>
@@ -423,6 +425,10 @@ class Image2VideoApp {
 
     getVideoUrl(hash) {
         return document.location.origin + '/downloads/results/' + hash + '.mp4';
+    }
+
+    getThumbnailUrl(hash) {
+        return document.location.origin + '/downloads/thumbnail/' + hash + '.jpg';
     }
 
     // Обновление списка задач

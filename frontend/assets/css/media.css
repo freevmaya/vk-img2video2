@@ -41,25 +41,25 @@
 }
 
 @media (min-width: 380px) {
-    .image-preview {
+    #photosPreviewContainer .image-preview {
         max-width: calc(100% - 1rem);
     }
 }
 
 @media (min-width: 430px) {
-    .image-preview {
+    #photosPreviewContainer .image-preview {
         max-width: calc(50% - 1rem);
     }
 }
 
 @media (min-width: 590px) {
-    .image-preview {
+    #photosPreviewContainer .image-preview {
         max-width: calc(33% - 1rem);
     }
 }
 
 @media (min-width: 750px) {
-    .image-preview {
+    #photosPreviewContainer .image-preview {
         max-width: calc(25% - 1rem);
     }
 }
