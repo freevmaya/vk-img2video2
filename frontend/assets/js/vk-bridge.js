@@ -75,7 +75,7 @@ class VKBridgeHandler {
 
         this.user = userData;
 
-        //this.updateNotificationsAllowed();
+        this.updateNotificationsAllowed();
         
         console.log('User info received:', userData);
         
