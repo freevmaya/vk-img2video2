@@ -6,12 +6,38 @@ const https = require('https');
 const url = require('url');
 const mysql = require('mysql2/promise');
 const axios = require('axios');
+const path = require('path');
 const fs = require('fs');
 const { VK } = require('vk-io');
+const ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require('ffmpeg-static');
+
+// Устанавливаем путь к ffmpeg
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const config = require('../config.json');
 
 const process = require('process');
+
+async function generateThumbnail(videoPath, thumbnailPath, filename, timeInSeconds = 1) {
+    return new Promise((resolve, reject) => {
+
+        let outfilename = path.basename(filename) + '.jpg';
+        ffmpeg(videoPath)
+            .screenshots({
+                timestamps: [timeInSeconds],
+                filename: outfilename,
+                folder: thumbnailPath,
+                size: '320x240'
+            })
+            .on('end', () => {
+                resolve(`${thumbnailPath}/${outfilename}`);
+            })
+            .on('error', (err) => {
+                reject(err);
+            });
+    });
+}
 
 async function downloadWithAxios(url, outputPath, filename = null) {
     try {
@@ -152,6 +178,7 @@ class WebSocketServer {
     async init() {
         // Создаем сервер для WebSocket
         this.RESULT_PATH = this.config.paths.results || 'frontend/downloads/results/';
+        this.THUMBNAIL_PATH = this.config.paths.thumbnailPath || 'frontend/downloads/thumbnail/';
 
         if (this.config.websocket.ssl.enabled) {
 
@@ -773,6 +800,8 @@ class WebSocketServer {
                             "UPDATE task SET state = 'finished' WHERE hash = ?",
                             [item.task_id]
                         );
+
+                        generateThumbnail(result.path, this.THUMBNAIL_PATH, item.task_id, 1);
                     }
 
                     delete this.downloadPromises[item.task_id];
