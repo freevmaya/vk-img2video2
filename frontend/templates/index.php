@@ -328,7 +328,7 @@
             echo "dev_data['{$name}'] = ".file_get_contents(ASSETS_PATH.'data/'.$file).";\n";
     }
 }?>
-        localStorage.setItem('auth_token', '<?=$auth_token;?>');
+        window.auth_token = '<?=$auth_token;?>';
         var VK_APP_ID = <?=VK_APP_ID?>;
         var APP_NAME = '<?=APP_NAME?>';
         var SUPPORT_EMAIL = '<?=SUPPORT_EMAIL?>';

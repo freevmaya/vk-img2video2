@@ -73,6 +73,36 @@ async function downloadWithAxios(url, outputPath, filename = null) {
     }
 }
 
+function has(obj, prop) {
+    if (!obj || obj[prop] == null) return false;
+    
+    const value = obj[prop];
+    
+    // Проверка разных типов данных
+    switch (true) {
+        case typeof value === 'string':
+            return value.trim() !== '';
+        case Array.isArray(value):
+            return value.length > 0;
+        case typeof value === 'object':
+            return Object.keys(value).length > 0;
+        case typeof value === 'number':
+            return !isNaN(value); // или value !== 0 в зависимости от требований
+        default:
+            return true; // boolean, function и т.д.
+    }
+}
+
+function one(obj, prop) {
+    if (has(obj, prop)) {
+        let value = obj[prop];
+        if (typeof value === 'string') 
+            return value.split(',')[0];
+        else return value[0];
+    }
+    return false;
+}
+
 function getExtensionFromMime(mimeType) {
     const mimeToExt = {
         'video/mp4': 'mp4',
@@ -221,31 +251,37 @@ class WebSocketServer {
     }
 
     connecClient(_ws, req) {
-        const parameters = url.parse(req.url, true).query;
-        const userId = parameters.userId;
-        const token = parameters.token;
-        const _timeZone = parameters.timeZone;
 
-        console.log(`New WebSocket connection: ${userId}, ${token}`);     
+        const parameters = url.parse(req.url, true).query;
+
+        const userId = one(parameters, 'userId');
+        const _timeZone = one(parameters, 'timeZone');
+        var token = one(parameters, 'token');
         
         // Аутентификация
         if (!userId || !token) {
             _ws.close(1008, 'Authentication required');
+            console.log(`Authentication required (${req.url})`);
             return;
         }
         
         // Проверяем токен (упрощенно)
         if (!this.verifyToken(userId, token)) {
             _ws.close(1008, 'Invalid token');
+            console.log(`Invalid token (${req.url})`);
             return;
         }
+
+        console.log(`New WebSocket connection: ${userId}, ${token}`);  
         
         // Сохраняем соединение
         this.clients.set(userId, { 
             ws : _ws, 
             timeZone: _timeZone 
         });
-        console.log(`User ${userId} connected`);
+
+        let total = Array.from(this.clients.keys());
+        console.log(`User ${userId} connected. Total clients: ${total}`);
         
         // Настройка обработчиков сообщений
         _ws.on('message', (data) => this.handleMessage(_ws, userId, data));
@@ -702,12 +738,16 @@ class WebSocketServer {
                 return;
             }
 
+            let keys = ids.join(',');
+
             const rows = await this.executeQuery(
                 'SELECT kt.*, t.user_id FROM kling_tasks kt ' +
                 'INNER JOIN task t ON t.hash = kt.task_id ' +
-                'WHERE kt.processed = 0 AND t.user_id IN (?)',
-                [ids.join(',')]
+                `WHERE kt.processed = 0 AND t.user_id IN (${keys})`
             );
+
+            console.log(keys);
+            console.log(rows);
             
             for (const item of rows) {
                 if (item.user_id) {
@@ -715,6 +755,7 @@ class WebSocketServer {
                     if (ws && ws.readyState === WebSocket.OPEN) {
                         try {
                             if (item.status === 'succeed' && item.result_url) {
+                                console.log(`Attempting download video ${item.result_url}`);
                                 await downloadWithAxios(item.result_url, this.RESULT_PATH, item.task_id)
                                     .then(async (result) => {
                                         if (result.status) {
@@ -740,7 +781,7 @@ class WebSocketServer {
                         } catch (error) {
                             console.error('Error processing task:', error);
                         }
-                    }
+                    } else console.log(`Client ${item.user_id} not connected`);
                 }
             }
         } catch (error) {

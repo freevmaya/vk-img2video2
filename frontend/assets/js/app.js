@@ -35,7 +35,7 @@ class Image2VideoApp {
         try {
             const data = handlerCall({
                 action: 'check_auth', 
-                auth_token: localStorage.getItem('auth_token')
+                auth_token: window.auth_token
             });
             
             if (data.authenticated && data.user) {
@@ -43,7 +43,7 @@ class Image2VideoApp {
                 this.updateUserInterface(data.user);
                 this.updateBalance(data.balance);
             }
-            //webSocketClient.send({ type: 'check_auth', auth_token: localStorage.getItem('auth_token') });
+            //webSocketClient.send({ type: 'check_auth', auth_token: window.auth_token });
         } catch (error) {
             console.error('Auth check error:', error);
         }
@@ -901,8 +901,7 @@ function debounce(func, wait) {
 
 async function handlerCall(params) {
 
-    let token = localStorage.getItem('auth_token');
-    if (token) params = Object.assign({access_token: token}, params);
+    if (window.auth_token) params = Object.assign({access_token: window.auth_token}, params);
 
     let response = await fetch('api/vk-handler.php', {
         method: 'POST',

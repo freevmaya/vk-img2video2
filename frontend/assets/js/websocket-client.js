@@ -34,14 +34,12 @@ class WebSocketClient {
             // Получаем user_id из localStorage или сессии
             const userId = localStorage.getItem('user_id') || 
                           (window.app && window.app.user ? window.app.user.id : null);
-            
-            const token = localStorage.getItem('auth_token');
 
             let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             
             // Добавляем параметры аутентификации в URL
-            const authUrl = userId && token ? 
-                `${url}?userId=${userId}&token=${token}&timeZone=${timeZone}` : 
+            const authUrl = userId && window.auth_token ? 
+                `${url}?userId=${userId}&token=${window.auth_token}&timeZone=${timeZone}` : 
                 url;
             
             this.socket = new WebSocket(authUrl);
@@ -64,7 +62,7 @@ class WebSocketClient {
         
         this.send({
             type: 'auth',
-            token: localStorage.getItem('auth_token')
+            token: window.auth_token
         });
         $('#btn-refresh').hide();
         

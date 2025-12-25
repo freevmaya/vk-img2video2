@@ -86,7 +86,7 @@ class VKBridgeHandler {
     async sendUserDataToServer(userData) {
         try {
 
-            userData['access_token'] = localStorage.getItem('auth_token');
+            userData['access_token'] = window.auth_token;
 
             const result = await handlerCall({
                 action: 'auth',
