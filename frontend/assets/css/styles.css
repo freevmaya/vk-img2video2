@@ -227,6 +227,14 @@ select option {
 .tasks-list {
     max-height: 400px;
     overflow-y: auto;
+    display: flex;
+    flex-flow: column;
+    /*align-items: center !important;*/
+    justify-content: space-between !important;
+}
+
+.text-muted {
+    text-align: center;
 }
 
 .task-item {
@@ -256,6 +264,10 @@ select option {
 
 .task-item.failure, .task-item.fail {
     border-left-color: var(--danger-color);
+}
+
+.task-item p {
+    color: gray;
 }
 
 .task-progress {
@@ -473,40 +485,4 @@ textarea.form-control {
 
 .modal-dialog {
     margin-top: 5em;
-}
-
-@media (min-width: 768px) {
-    .col-md-6 {
-        width: calc(50% - 1rem);
-    }
-}
-
-@media (max-width: 700px) { 
-    .video-card {
-        width: calc(50% - 0.5rem);
-    }
-}
-
-@media (max-width: 450px) { 
-    .video-card {
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .glass-container {
-        padding: 15px;
-    }
-    
-    .app-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .upload-method-card {
-        margin-bottom: 15px;
-    }
-    
-    .payment-options {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }

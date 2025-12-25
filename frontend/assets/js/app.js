@@ -759,7 +759,7 @@ class TaskView {
                         ${this.getStatusText(task.state)}
                     </span>
                 </div>
-                <p class="text-muted small mb-2">
+                <p class="small mb-2">
                     <i class="bi bi-clock me-1"></i>
                     ${new Date(task.date).toLocaleString()}
                 </p>
