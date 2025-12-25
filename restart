@@ -1,0 +1,5 @@
+#!/bin/bash
+# Переходим в проект
+
+cd /home/vmaya/www/vk-img2video2
+pm2 restart ecosystem.config.js
