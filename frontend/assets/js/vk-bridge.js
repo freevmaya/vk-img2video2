@@ -67,7 +67,7 @@ class VKBridgeHandler {
 
         this.user = userData;
 
-        //this.updateNotificationsAllowed();
+        this.updateNotificationsAllowed();
         
         console.log('User info received:', userData);
         
@@ -105,9 +105,7 @@ class VKBridgeHandler {
             });
             
             if (result.success) {
-                console.log('User data saved on server');
-        
-                // Сохраняем в localStorage для использования вне VK
+                //console.log('User data saved on server');
                 localStorage.setItem('user_id', result.user.id);
 
                 // Обновляем интерфейс

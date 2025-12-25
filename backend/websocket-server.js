@@ -314,7 +314,7 @@ class WebSocketServer {
                 }));
             });
 
-
+        /*
         this.executeQuery("SELECT * FROM task WHERE user_id = ? AND state = 'active'", [userId])
             .then((rows)=>{
                 _ws.send(JSON.stringify({
@@ -322,6 +322,7 @@ class WebSocketServer {
                     tasks: rows
                 }))
             });
+        */
     }
 
     sendUserNotify(userId, message) {
