@@ -40,19 +40,11 @@ class VKBridgeHandler {
     }
 
     updateNotificationsAllowed() {
-        if (this.bridge) {
-
-            this.bridge.send('VKWebAppCallAPIMethod', {
-                method: 'apps.isNotificationsAllowed', 
-                params: {
-                    user_id: this.user.id,
-                    access_token: this.user.access_token,
-                    v: '5.131'
-                }
-            }).then((data)=>{
-                console.log(data);
-            });
-        }
+        this.ApiMethod('apps', 'apps.isNotificationsAllowed', {
+            user_id: this.user.id
+        }).then((data)=>{
+            console.log(data);
+        });
     }
 
     async getAccessToken(a_scope) {
@@ -75,7 +67,7 @@ class VKBridgeHandler {
 
         this.user = userData;
 
-        this.updateNotificationsAllowed();
+        //this.updateNotificationsAllowed();
         
         console.log('User info received:', userData);
         
