@@ -229,7 +229,13 @@ select option {
     overflow-y: auto;
     display: flex;
     flex-flow: column;
-    /*align-items: center !important;*/
+    justify-content: space-between !important;
+}
+
+.tasks-list .attention {
+    display: flex;
+    flex-flow: column;
+    align-items: center !important;
     justify-content: space-between !important;
 }
 

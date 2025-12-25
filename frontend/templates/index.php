@@ -1,5 +1,5 @@
 <?
-    $updateVer = 4;
+    $updateVer = 6;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -316,6 +316,7 @@
     <script src="assets/js/vk-bridge.js?v=<?=$updateVer?>"></script>
     <script src="assets/js/websocket-client.js?v=<?=$updateVer?>"></script>
     <script src="assets/js/app.js?v=<?=$updateVer?>"></script>
+    <script src="assets/js/utils.js?v=<?=$updateVer?>"></script>
     
     <!-- Инициализация приложения -->
     <script>

@@ -171,3 +171,36 @@ function convertMySQLTimeZone(mysqlDateTime, fromTimezone, toTimezone) {
     // Возвращаем в формате MySQL
     return `${result.year}-${result.month}-${result.day} ${result.hour}:${result.minute}:${result.second}`;
 }
+
+const toNumber = (value) => {
+    if (value == null) return 0;
+    
+    const num = typeof value === 'number' 
+        ? value 
+        : parseFloat(String(value).trim().replace(/\s+/g, ''));
+    
+    return isNaN(num) ? 0 : num;
+}
+
+function isNumeric(value) {
+    if (value == null) return false;
+    const type = typeof value;
+    if (type === 'number') {
+        return !isNaN(value) && isFinite(value);
+    }
+    if (type === 'string') {
+        const str = value.trim();
+        if (str === '') return false;
+        const withoutSpaces = str.replace(/\s+/g, '');
+        const normalized = withoutSpaces.replace(/,/g, '.');
+        const numberRegex = /^[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?$/;
+        return numberRegex.test(normalized);
+    }
+    if (type === 'boolean') return false;
+    try {
+        const num = Number(value);
+        return !isNaN(num) && isFinite(num);
+    } catch {
+        return false;
+    }
+}

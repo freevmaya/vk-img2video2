@@ -651,7 +651,7 @@ class WebSocketServer {
             type: 'task_update',
             message: kl_task,
             status: a_status,
-            balance: rows.balance
+            balance: rows ? rows.balance : 0
         }));
     }
 

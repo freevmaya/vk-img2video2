@@ -253,14 +253,22 @@ class Image2VideoApp {
     addTaskToList(task) {
         const tasksList = $('#tasksList');
         new TaskView(tasksList, task);
+
+        tasksList.find('.attention').remove();
     }
 
     // Обновление статуса задачи
     updateTaskStatus(hash, status) {
         const taskElement = $(`.task-item[data-task-id="${hash}"]`);
-        if (!taskElement.length) return;
-
-        taskElement.data('view').updateProgress(status);
+        if (taskElement.length > 0)
+            taskElement.data('view').updateProgress(status);
+        else {
+            handlerCall({action:'get_task', hash: hash})
+                .then((result)=>{                    
+                    if (result.success && result.task)
+                        this.addTaskToList(result.task);
+                });
+        }
     }
 
     // Показ результата видео
@@ -424,8 +432,10 @@ class Image2VideoApp {
         
         if (!activeTasks.length) {
             tasksList.html(`
-                <i class="bi bi-inbox display-4 text-muted mb-3"></i>
-                <p class="text-muted">У вас пока нет активных задач</p>
+                <div class="attention">
+                    <i class="bi bi-inbox display-4 text-muted mb-3"></i>
+                    <p class="text-muted">У вас пока нет активных задач</p>
+                </div>
             `);
             return;
         }
@@ -435,11 +445,15 @@ class Image2VideoApp {
 
     // Обновление баланса
     updateBalance(newBalance = false) {
-        if (newBalance === false) {
-            let result = handlerCall({action: 'get_balance'});
-            $('.balance-amount').text(`${result.balance} ₽`);
+        if (isNumeric(newBalance))
+            $('.balance-amount').text(`${newBalance} ₽`);
+        else {
+            handlerCall({action: 'get_balance'})
+                .then((result)=>{
+                    if (isNumeric(result.balance))
+                        $('.balance-amount').text(`${result.balance} ₽`);
+                });
         }
-        else $('.balance-amount').text(`${newBalance} ₽`);
     }
 
     // Показ модального окна оплаты

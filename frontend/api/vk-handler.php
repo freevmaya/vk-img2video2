@@ -57,7 +57,7 @@ try {
                         break;
                         
                     case 'get_task':
-                        $response = handleGetTask($_GET['id'] ?? null);
+                        $response = handleGetTask($input['id'] ?? null, $input['hash'] ?? null);
                         break;
                         
                     case 'get_tasks':
@@ -65,7 +65,7 @@ try {
                         break;
                         
                     case 'download_video':
-                        $response = handleDownloadVideo($_GET['id'] ?? null);
+                        $response = handleDownloadVideo($input['id'] ?? null);
                         break;
                         
                     case 'get_balance':
@@ -298,16 +298,18 @@ function generatePrompt($generationParams) {
     return $generationParams['prompt'].'. Style: '.$generationParams['styleSelect'].', Camera movement: '.$generationParams['transitionSelect'];
 }
 
-function handleGetTask($taskId) {
+function handleGetTask($taskId, $hash = false) {
     global $db;
     
-    if (!$taskId) {
+    if (!$taskId && !$hash) {
         return ['success' => false, 'message' => 'ID задачи не указан'];
     }
     
     try {
         
-        $task = (new TaskModel())->getItem($taskId);
+        if ($taskId)
+            $task = (new TaskModel())->getItem($taskId);
+        else $task = (new TaskModel())->getItem($hash, 'hash');
         
         return [
             'success' => true,
