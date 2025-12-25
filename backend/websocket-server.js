@@ -133,6 +133,7 @@ class WebSocketServer {
         this.isDbConnected = false;
         this.reconnectionAttempts = 0;
         this.maxReconnectionAttempts = 10;
+        this.downloadPromises = {};
         
         this.init();
         if (process.send) {
@@ -726,6 +727,40 @@ class WebSocketServer {
         }
     }
 
+    downloadAttempt(ws, item) {
+
+        if (!this.downloadPromises[item.task_id]) {
+
+            console.log(`Attempting download video ${item.result_url}`);
+            let promise = downloadWithAxios(item.result_url, this.RESULT_PATH, item.task_id);
+            
+            promise.then(async (result) => {
+                    if (result.status) {
+                        await this.setProcessedTask(ws, item);
+                        await this.executeQuery(
+                            "UPDATE task SET state = 'finished' WHERE hash = ?",
+                            [item.task_id]
+                        );
+                    }
+
+                    delete this.downloadPromises[item.task_id];
+                })
+
+            promise.catch(async (error) => {
+                    console.error('Download error:', error);
+                    await this.executeQuery(
+                        "UPDATE task SET state = 'failure' WHERE hash = ?",
+                        [item.task_id]
+                    );
+                    await this.failureTransaction(item.user_id, item.task_id);
+                    await this.setProcessedTask(ws, item, 'download_failed');
+
+                    delete this.downloadPromises[item.task_id];
+                });
+            this.downloadPromises[item.task_id] = promise;
+        }
+    }
+
     async watchTasks() {
         let ids = Array.from(this.clients.keys());
         if (ids.length === 0) {
@@ -752,26 +787,7 @@ class WebSocketServer {
                     if (ws && ws.readyState === WebSocket.OPEN) {
                         try {
                             if (item.status === 'succeed' && item.result_url) {
-                                console.log(`Attempting download video ${item.result_url}`);
-                                await downloadWithAxios(item.result_url, this.RESULT_PATH, item.task_id)
-                                    .then(async (result) => {
-                                        if (result.status) {
-                                            await this.setProcessedTask(ws, item);
-                                            await this.executeQuery(
-                                                "UPDATE task SET state = 'finished' WHERE hash = ?",
-                                                [item.task_id]
-                                            );
-                                        }
-                                    })
-                                    .catch(async (error) => {
-                                        console.error('Download error:', error);
-                                        await this.executeQuery(
-                                            "UPDATE task SET state = 'failure' WHERE hash = ?",
-                                            [item.task_id]
-                                        );
-                                        await this.failureTransaction(item.user_id, item.task_id);
-                                        await this.setProcessedTask(ws, item, 'download_failed');
-                                    });
+                                this.downloadAttempt(ws, item);                                
                             } else {
                                 await this.setProcessedTask(ws, item);
                             }
