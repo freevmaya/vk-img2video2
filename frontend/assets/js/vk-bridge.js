@@ -343,7 +343,7 @@ class VKBridgeHandler {
     }
 
     VKWebAppShowOrderBox() {
-        await this.bridge.send('VKWebAppShowOrderBox', {
+        this.bridge.send('VKWebAppShowOrderBox', {
             type: 'item', // Всегда должно быть 'item'
             item: id
         })
@@ -365,20 +365,21 @@ class VKBridgeHandler {
     }
 
     VKWebAppOpenPayForm() {
-        await this.bridge.send('VKWebAppOpenPayForm', {app_id: 6909581,
+        this.bridge.send('VKWebAppOpenPayForm', {app_id: 6909581,
             action: 'pay-to-user',
             params: {
                 user_id: this.user.id
-            }})
-            .then((data) => {
-                if (data.status) {
-                    // Экран VK Pay показан
-                }
-                console.log(data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            }
+        })
+        .then((data) => {
+            if (data.status) {
+                // Экран VK Pay показан
+            }
+            console.log(data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     // Инициализация платежей
