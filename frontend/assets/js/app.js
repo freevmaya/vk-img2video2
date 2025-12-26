@@ -292,7 +292,8 @@ class Image2VideoApp {
             const videoCard = $(`
                 <div class="video-card" id="${block_id}">
                     <div class="video-preview">
-                        <img src="${thumbnail_url}"/>
+                        <div class="bi bi-play-circle" style="background-image: url(${thumbnail_url})">
+                        </div>
                         <video controls class="w-100" style="display: none">
                             <source src="${url}" type="video/mp4">
                             Ваш браузер не поддерживает видео.

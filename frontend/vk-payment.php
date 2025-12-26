@@ -6,6 +6,8 @@
 
 require __DIR__ . '/../engine.php';
 
+define('USERINDEX', 'vk_user_id');
+
 header("Content-Type: application/json; encoding=utf-8");
 
 // Логирование
