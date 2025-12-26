@@ -7,7 +7,8 @@
 }
 
 .modal {
-    max-height: 100%;
+    max-height: min(100%, 95vh);
+    overflow: visible;
 }
 
 .modal-body {
