@@ -14,8 +14,11 @@ test*.*
 config.*
 downloads
 combined.txt
+
 gitpull
 deploy
+restart
+start-services.sh
 
 *.sublime-project
 *.sublime-workspace

@@ -273,6 +273,35 @@ class Image2VideoApp {
         }
     }
 
+    watchVideo(blockId) {
+        let videoElem = $(`#${blockId}`).find('video');
+        let video = videoElem[0];
+
+        if (video.requestFullscreen) {
+            video.requestFullscreen();
+        } else if (video.mozRequestFullScreen) { // Firefox
+            video.mozRequestFullScreen();
+        } else if (video.webkitRequestFullscreen) { // Chrome, Safari
+            video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) { // IE/Edge
+            video.msRequestFullscreen();
+        }
+
+        videoElem.show();
+        video.play();
+
+        /*
+        const overlay = $('<div>', {
+            id: 'fullscreenOverlay',
+            class: 'fullscreenOverlay',
+            html: '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>'
+        });
+
+
+        $('body').append(overlay);
+        */
+    }
+
     // Показ результата видео
     showVideoResult(task) {
         let hash = task.hash ?? task.task_id;
@@ -289,37 +318,68 @@ class Image2VideoApp {
             let url = this.getVideoUrl(hash);
             let thumbnail_url = this.getThumbnailUrl(hash);
             
-            const videoCard = $(`
-                <div class="video-card" id="${block_id}">
-                    <div class="video-preview">
-                        <!--
-                        <div class="bi bi-play-circle" style="background-image: url(${thumbnail_url})">
-                        </div>-->
-                        <video controls class="w-100" style="display: block">
-                            <source src="${url}" type="video/mp4">
-                            Ваш браузер не поддерживает видео.
-                        </video>
-                    </div>
-                    <div class="p-3">
-                        <div class="video-info">
-                            <h6>Видео #${hash}</h6>
-                            <small class="text-muted">
-                                ${new Date(task.completed_at).toLocaleString()}
-                            </small>
+            let videoCard = '';
+            if (ISDEV) {
+                videoCard = $(`
+                    <div class="video-card" id="${block_id}">
+                        <div class="video-preview">
+                            <div class="bi bi-play-circle" style="background-image: url(${thumbnail_url})" onclick="app.watchVideo('${block_id}')">
+                            </div>
+                            <video controls class="w-100 hide">
+                                <source src="${url}" type="video/mp4">
+                                Ваш браузер не поддерживает видео.
+                            </video>
                         </div>
-                        <div class="video-overlay">
-                            <div class="video-actions">
-                                <button class="btn btn-primary btn-sm" onclick="app.downloadVideo('${hash}')">
-                                    <i class="bi bi-download me-1"></i>Скачать
-                                </button>
-                                <button class="btn btn-success btn-sm" onclick="app.shareVideo('${hash}')">
-                                    <i class="bi bi-share me-1"></i>Поделиться
-                                </button>
+                        <div class="p-3">
+                            <div class="video-info">
+                                <h6>Видео #${hash}</h6>
+                                <small class="text-muted">
+                                    ${new Date(task.completed_at).toLocaleString()}
+                                </small>
+                            </div>
+                            <div class="video-overlay">
+                                <div class="video-actions">
+                                    <button class="btn btn-primary btn-sm" onclick="app.downloadVideo('${hash}')">
+                                        <i class="bi bi-download me-1"></i>Скачать
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="app.shareVideo('${hash}')">
+                                        <i class="bi bi-share me-1"></i>Поделиться
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `);
+                `);
+            } else {
+                videoCard = $(`
+                    <div class="video-card" id="${block_id}">
+                        <div class="video-preview">
+                            <video controls class="w-100">
+                                <source src="${url}" type="video/mp4">
+                                Ваш браузер не поддерживает видео.
+                            </video>
+                        </div>
+                        <div class="p-3">
+                            <div class="video-info">
+                                <h6>Видео #${hash}</h6>
+                                <small class="text-muted">
+                                    ${new Date(task.completed_at).toLocaleString()}
+                                </small>
+                            </div>
+                            <div class="video-overlay">
+                                <div class="video-actions">
+                                    <button class="btn btn-primary btn-sm" onclick="app.downloadVideo('${hash}')">
+                                        <i class="bi bi-download me-1"></i>Скачать
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="app.shareVideo('${hash}')">
+                                        <i class="bi bi-share me-1"></i>Поделиться
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }
             
             videosGrid.prepend(videoCard);
             videosSection.show();
