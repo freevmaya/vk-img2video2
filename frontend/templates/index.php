@@ -1,5 +1,5 @@
 <?
-    $updateVer = 8;
+    $updateVer = 9;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -296,7 +296,7 @@
             <div class="modal-content glass-modal">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-file-text me-2"></i><span class="title"></span>
+                        <i class="bi bi-file-text me-2"></i><span></span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
