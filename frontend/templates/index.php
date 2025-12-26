@@ -334,6 +334,7 @@
         var APP_NAME = '<?=APP_NAME?>';
         var SUPPORT_EMAIL = '<?=SUPPORT_EMAIL?>';
         var ISDEV = <?=DEV ? 'true' : 'false'?>;
+        var SOCKET_ADDRESS = '<?=SOCKET_ADDRESS?>';
 
         $(document).ready(function() {
             // Инициализация VK Bridge если мы в VK

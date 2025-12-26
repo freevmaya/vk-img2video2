@@ -5,150 +5,15 @@ const http = require('http');
 const https = require('https');
 const url = require('url');
 const mysql = require('mysql2/promise');
-const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 const { VK } = require('vk-io');
-const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('ffmpeg-static');
 
-// Устанавливаем путь к ffmpeg
-ffmpeg.setFfmpegPath(ffmpegPath);
+const { one, downloadWithAxios, generateThumbnail } = require('./utils.js');
 
 const config = require('../config.json');
 
 const process = require('process');
-
-async function generateThumbnail(videoPath, thumbnailPath, filename, timeInSeconds = 1) {
-    return new Promise((resolve, reject) => {
-
-        let outfilename = path.basename(filename) + '.jpg';
-        ffmpeg(videoPath)
-            .screenshots({
-                timestamps: [timeInSeconds],
-                filename: outfilename,
-                folder: thumbnailPath,
-                size: '320x240'
-            })
-            .on('end', () => {
-                resolve(`${thumbnailPath}/${outfilename}`);
-            })
-            .on('error', (err) => {
-                reject(err);
-            });
-    });
-}
-
-async function downloadWithAxios(url, outputPath, filename = null) {
-    try {
-        const response = await axios({
-            method: 'GET',
-            url: url,
-            responseType: 'stream', // Важно для больших файлов
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Node.js Downloader)'
-            },
-            timeout: 30000
-        });
-        
-        if (!filename) {
-            // Определяем имя файла
-            filename = path.basename(url);
-            const contentDisposition = response.headers['content-disposition'];
-            
-            if (contentDisposition) {
-                const match = contentDisposition.match(/filename="?(.+?)"?$/);
-                if (match) filename = match[1];
-            }
-        }
-        
-        let ext = null;
-        // Если имя файла не содержит расширения, добавляем из Content-Type
-        if (!path.extname(filename) && response.headers['content-type']) {
-            ext = getExtensionFromMime(response.headers['content-type']);
-            if (ext) filename += `.${ext}`;
-        }
-        
-        const filePath = outputPath + filename;
-        
-        // Создаем поток для записи
-        const writer = fs.createWriteStream(filePath);
-        
-        // Записываем файл
-        response.data.pipe(writer);
-        
-        return new Promise((resolve, reject) => {
-            writer.on('finish', () => {
-                resolve({
-                    path: filePath,
-                    filename: filename,
-                    size: fs.statSync(filePath).size,
-                    contentType: response.headers['content-type'],
-                    status: response.status
-                });
-            });
-            
-            writer.on('error', (err) => {
-                fs.unlink(filePath, () => {});
-                reject(err);
-            });
-        });
-        
-    } catch (error) {
-        throw new Error(`Ошибка загрузки: ${error.message}`);
-    }
-}
-
-function has(obj, prop) {
-    if (!obj || obj[prop] == null) return false;
-    
-    const value = obj[prop];
-    
-    // Проверка разных типов данных
-    switch (true) {
-        case typeof value === 'string':
-            return value.trim() !== '';
-        case Array.isArray(value):
-            return value.length > 0;
-        case typeof value === 'object':
-            return Object.keys(value).length > 0;
-        case typeof value === 'number':
-            return !isNaN(value); // или value !== 0 в зависимости от требований
-        default:
-            return true; // boolean, function и т.д.
-    }
-}
-
-function one(obj, prop) {
-    if (has(obj, prop)) {
-        let value = obj[prop];
-        if (typeof value === 'string') 
-            return value.split(',')[0];
-        else return value[0];
-    }
-    return false;
-}
-
-function getExtensionFromMime(mimeType) {
-    const mimeToExt = {
-        'video/mp4': 'mp4',
-        'image/jpeg': 'jpg',
-        'image/png': 'png',
-        'image/gif': 'gif',
-        'image/webp': 'webp',
-        'image/svg+xml': 'svg',
-        'application/pdf': 'pdf',
-        'application/zip': 'zip',
-        'text/plain': 'txt',
-        'text/html': 'html',
-        'application/json': 'json'
-    };
-
-    if (!mimeToExt[mimeType])
-        console.log('Not found mime type: ' + mimeType);
-    
-    return mimeToExt[mimeType] || null;
-}
 
 class WebSocketServer {
     constructor() {
@@ -801,7 +666,7 @@ class WebSocketServer {
                             [item.task_id]
                         );
 
-                        generateThumbnail(result.path, this.THUMBNAIL_PATH, item.task_id, 1);
+                        generateThumbnail(result.path, this.THUMBNAIL_PATH, 1, 50);
                     }
 
                     delete this.downloadPromises[item.task_id];
