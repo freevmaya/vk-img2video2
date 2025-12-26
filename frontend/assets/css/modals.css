@@ -6,6 +6,10 @@
     min-height: 500px;
 }
 
+.modal {
+    max-height: 100%;
+}
+
 .modal-body {
     padding: 0;
     overflow-y: auto;
