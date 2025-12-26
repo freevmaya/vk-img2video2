@@ -18,7 +18,7 @@ class WebSocketClient {
 
         const protocol = isssl ? 'wss:' : 'ws:';
         const host = window.location.hostname;
-        const wsPort = isssl ? 8443 : 8080;
+        const wsPort = isssl ? 8444 : 8080;
         const wsUrl = `${protocol}//${host}:${wsPort}`;
         
         console.log('Connecting to WebSocket:', wsUrl);
