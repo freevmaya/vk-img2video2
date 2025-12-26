@@ -19,6 +19,7 @@ gitpull
 deploy
 restart
 start-services.sh
+ecosystem.config.js
 
 *.sublime-project
 *.sublime-workspace
