@@ -639,6 +639,12 @@ class Image2VideoApp {
             else body.empty();
 
             view.show();
+
+            if (vkBridgeHandler.bridge)
+                vkBridgeHandler.bridge.send('VKWebAppScroll', {
+                    top: 100,
+                    speed: 600
+                }) 
         }
     }
 
