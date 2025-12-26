@@ -318,68 +318,36 @@ class Image2VideoApp {
             let url = this.getVideoUrl(hash);
             let thumbnail_url = this.getThumbnailUrl(hash);
             
-            let videoCard = '';
-            if (ISDEV) {
-                videoCard = $(`
-                    <div class="video-card" id="${block_id}">
-                        <div class="video-preview">
-                            <div class="bi bi-play-circle" style="background-image: url(${thumbnail_url})" onclick="app.watchVideo('${block_id}')">
-                            </div>
-                            <video controls class="w-100 hide">
-                                <source src="${url}" type="video/mp4">
-                                Ваш браузер не поддерживает видео.
-                            </video>
+            let videoCard = $(`
+                <div class="video-card" id="${block_id}">
+                    <div class="video-preview">
+                        <div class="bi bi-play-circle" style="background-image: url(${thumbnail_url})" onclick="app.watchVideo('${block_id}')">
                         </div>
-                        <div class="p-3">
-                            <div class="video-info">
-                                <h6>Видео #${hash}</h6>
-                                <small class="text-muted">
-                                    ${new Date(task.completed_at).toLocaleString()}
-                                </small>
-                            </div>
-                            <div class="video-overlay">
-                                <div class="video-actions">
-                                    <button class="btn btn-primary btn-sm" onclick="app.downloadVideo('${hash}')">
-                                        <i class="bi bi-download me-1"></i>Скачать
-                                    </button>
-                                    <button class="btn btn-success btn-sm" onclick="app.shareVideo('${hash}')">
-                                        <i class="bi bi-share me-1"></i>Поделиться
-                                    </button>
-                                </div>
+                        <video controls class="w-100 hide">
+                            <source src="${url}" type="video/mp4">
+                            Ваш браузер не поддерживает видео.
+                        </video>
+                    </div>
+                    <div class="p-3">
+                        <div class="video-info">
+                            <h6>Видео #${hash}</h6>
+                            <small class="text-muted">
+                                ${new Date(task.completed_at).toLocaleString()}
+                            </small>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-actions">
+                                <button class="btn btn-primary btn-sm" onclick="app.downloadVideo('${hash}')">
+                                    <i class="bi bi-download me-1"></i>Скачать
+                                </button>
+                                <button class="btn btn-success btn-sm" onclick="app.shareVideo('${hash}')">
+                                    <i class="bi bi-share me-1"></i>Поделиться
+                                </button>
                             </div>
                         </div>
                     </div>
-                `);
-            } else {
-                videoCard = $(`
-                    <div class="video-card" id="${block_id}">
-                        <div class="video-preview">
-                            <video controls class="w-100">
-                                <source src="${url}" type="video/mp4">
-                                Ваш браузер не поддерживает видео.
-                            </video>
-                        </div>
-                        <div class="p-3">
-                            <div class="video-info">
-                                <h6>Видео #${hash}</h6>
-                                <small class="text-muted">
-                                    ${new Date(task.completed_at).toLocaleString()}
-                                </small>
-                            </div>
-                            <div class="video-overlay">
-                                <div class="video-actions">
-                                    <button class="btn btn-primary btn-sm" onclick="app.downloadVideo('${hash}')">
-                                        <i class="bi bi-download me-1"></i>Скачать
-                                    </button>
-                                    <button class="btn btn-success btn-sm" onclick="app.shareVideo('${hash}')">
-                                        <i class="bi bi-share me-1"></i>Поделиться
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `);
-            }
+                </div>
+            `);
             
             videosGrid.prepend(videoCard);
             videosSection.show();
