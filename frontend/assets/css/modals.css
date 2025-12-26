@@ -6,10 +6,10 @@
     min-height: 500px;
 }
 
-#agreementModal .modal-body {
+.modal-body {
     padding: 0;
     overflow-y: auto;
-    max-height: 65vh;
+    max-height: 70vh;
 }
 
 .agreement-content {
