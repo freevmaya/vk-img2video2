@@ -205,9 +205,10 @@
             <div class="container">
                 <p class="mb-2">&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?>. Все права защищены.</p>
                 <p class="text-muted small">
-                    <a href="#" class="text-muted text-decoration-none me-3" onclick="app.showAgreementModal()">Пользовательское соглашение</a>
-                    <a href="#" class="text-muted text-decoration-none me-3" onclick="app.showPrivacyModal()">Политика конфиденциальности</a>
-                    <a href="mailto:<?=SUPPORT_EMAIL?>" class="text-muted text-decoration-none">Техническая поддержка</a>
+                    <a href="#" class="text-muted text-decoration-none me-3" onclick="app.showModal('agreement-content.html', $('#agreementModal'))">Пользовательское соглашение</a>
+                    <a href="#" class="text-muted text-decoration-none me-3" onclick="app.showModal('privacy-content.html', 'Политика конфиденциальности')">Политика конфиденциальности</a>
+                    <a href="#" class="text-muted text-decoration-none me-3" onclick="app.showModal('rules.html', 'Правила оказания услуг')">Правила оказания услуг</a>
+                    <a href="#" class="text-muted text-decoration-none me-3" onclick="app.showModal('contact.html', 'Контактная информация')">Контактная информация</a>
                 </p>
             </div>
         </footer>
@@ -262,28 +263,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно пользовательского соглашения -->
-    <div class="modal fade" id="privacyModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
-            <div class="modal-content glass-modal">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="bi bi-file-text me-2"></i>Политика конфиденциальности
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="privacyContent">
-                    <!-- Контент будет загружен динамически -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i>Закрыть
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Модальное окно публикации видео -->
     <div class="modal fade" id="publishModal" tabindex="-1" aria-hidden="true" role="dialog">
         <div class="modal-dialog modal-dialog-top" style="width:500px">
@@ -301,6 +280,27 @@
                         <div class="payment-option" onclick="app.saveToAlbum()">В альбоме
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="modalView" tabindex="-1" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-top">
+            <div class="modal-content glass-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-file-text me-2"></i><span class="title"></span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

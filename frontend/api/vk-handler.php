@@ -80,13 +80,13 @@ try {
                         $response = handleLogout();
                         break;
 
-                    case 'get_agreement':
-                        $response = handleGetContent('agreement-content.html');
+                    case 'get_content':
+                        $response = handleGetContent($input['filename']);
                         break;
-
+                    /*
                     case 'get_privacy':
                         $response = handleGetContent('privacy-content.html');
-                        break;
+                        break;*/
 
                     case 'accept_agreement':
                         $response = handleAcceptAgreement($input['timestamp'] ?? null, $input['version'] ?? null);
@@ -128,9 +128,13 @@ function handleGetContent($template_name) {
         
         // Читаем содержимое файла
         $content = file_get_contents($agreementFile);
+
+        $app_url = $_SESSION['USERINDEX'] == 'vk_user_id' ? VK_APP_URL : OK_APP_URL;
+
         
         // Заменяем переменные
         $content = str_replace('<!--APP_NAME-->', APP_NAME, $content);
+        $content = str_replace('<!--APP_URL-->', $app_url, $content);
         $content = str_replace('<!--SUPPORT_EMAIL-->', SUPPORT_EMAIL, $content);
         $content = str_replace('<!--UPDATE_DOCS-->', UPDATE_DOCS, $content);
         

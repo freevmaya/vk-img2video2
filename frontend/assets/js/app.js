@@ -623,6 +623,25 @@ class Image2VideoApp {
         });        
     }
 
+    showModal(content, modalElementOrTitle) {
+
+        let modalElement = $('#modalView');
+        if (typeof modalElementOrTitle == 'string')
+            modalElement.find('.modal-title span').text(modalElementOrTitle);
+        else modalElement = modalElementOrTitle;
+
+        if (modalElement.length) {
+            let view = new bootstrap.Modal(modalElement[0]);
+            let body = modalElement.find('.modal-body');
+
+            if (content)
+                this.loadContent(content, body);
+            else body.empty();
+
+            view.show();
+        }
+    }
+
     showPrivacyModal() {
         if (!this.privacyModal)
             this.privacyModal = new bootstrap.Modal(document.getElementById('privacyModal'));
@@ -646,12 +665,11 @@ class Image2VideoApp {
     }
 
     // Загрузить контент соглашения
-    async loadContent(content, container) {
+    async loadContent(contentFileName, container) {
         try {
-            const data = await handlerCall({action: content});
+            const data = await handlerCall({action: 'get_content', filename: contentFileName});
             
             if (data.success && data.content) {
-                data.content = data.content.replace('<!--SUPPORT_EMAIL-->', SUPPORT_EMAIL);
                 container.html(data.content);
                 this.applyAgreementStyles(container);
             } else {
