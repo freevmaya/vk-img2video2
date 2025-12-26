@@ -342,6 +342,45 @@ class VKBridgeHandler {
         }
     }
 
+    VKWebAppShowOrderBox() {
+        await this.bridge.send('VKWebAppShowOrderBox', {
+            type: 'item', // Всегда должно быть 'item'
+            item: id
+        })
+        .then((data) => {
+            console.log(data);
+            if (data.status) {
+                if (data.success) {
+                    this.showNotification('Платеж успешно выполнен!', 'success');
+                    return true;
+                } else {
+                    this.showNotification('Платеж не был завершен', 'warning');
+                    return false;
+                }
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    VKWebAppOpenPayForm() {
+        await this.bridge.send('VKWebAppOpenPayForm', {app_id: 6909581,
+            action: 'pay-to-user',
+            params: {
+                user_id: this.user.id
+            }})
+            .then((data) => {
+                if (data.status) {
+                    // Экран VK Pay показан
+                }
+                console.log(data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     // Инициализация платежей
     async initPayment(id, price, description) {
         if (!this.bridge) {
@@ -350,27 +389,7 @@ class VKBridgeHandler {
         }
 
         try {
-            const payment = await this.bridge.send('VKWebAppShowOrderBox', {
-                type: 'item', // Всегда должно быть 'item'
-                item: id
-            })
-            .then((data) => {
-                console.log(data);
-                if (data.status) {
-                  // Экран VK Pay показан
-            
-                    if (data.success) {
-                        this.showNotification('Платеж успешно выполнен!', 'success');
-                        return true;
-                    } else {
-                        this.showNotification('Платеж не был завершен', 'warning');
-                        return false;
-                    }
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            this.VKWebAppOpenPayForm();            
         } catch (error) {
             console.error('Payment error:', error);
             this.showNotification('Ошибка при оплате', 'error');
