@@ -71,8 +71,6 @@ class VKBridgeHandler {
 
         //this.updateNotificationsAllowed();
         
-        console.log('User info received:', userData);
-        
         // Отправляем данные на сервер для регистрации/авторизации
         await this.sendUserDataToServer(userData);
     }

@@ -194,7 +194,7 @@ class PaymentProcess {
                     'title' => 'Разовая генерация',
                     'price' => SITE_PRICE['vk']
                 ]
-            ]
+            ];
         }
         $item = $dbp->line("SELECT id AS item_id, name AS title, price FROM subscribe_options WHERE id={$item_id}");
         if ($item)  
