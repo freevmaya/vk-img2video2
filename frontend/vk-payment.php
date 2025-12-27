@@ -218,8 +218,11 @@ class PaymentProcess {
             if ($subOptions = (new SubscribeOptions())->getItem($sub_id)) {
                 return [
                     "response" => [
-                        'price'=>$subOptions['price'],
-                        'period'=>$subOptions['period'],
+                        "item_id"   => $data['item'],
+                        "title"     => $subOptions['name'],
+                        "description" => $subOptions['description'],
+                        'price'     => $subOptions['price'],
+                        'period'    =>$subOptions['period'],
                         'trial_duration'=>$subOptions['trial_duration'],
                         'expiration'=>3600
                     ]
