@@ -149,6 +149,12 @@ class PaymentProcess {
                 case 'get_subscription_test': 
                     $result = $this->get_subscription($data);
                     break;
+                case 'subscription_status_change': 
+                    $result = $this->subscription_status_change($data);
+                    break;
+                case 'subscription_status_change_test': 
+                    $result = $this->subscription_status_change($data);
+                    break;
                 default: 
                     http_response_code(500);
                     logPayment('Неизвестный "notification_type". Parsed data: '.$json_data, true);
@@ -239,6 +245,67 @@ class PaymentProcess {
                     "critical" => true
                 ]
             ];
+    }
+
+
+    function subscription_status_change($data) {
+        $sub_id = explode("-", $data['item_id'])[1];
+        $errorMsg = [
+            "error" => [
+                'error_code'=>1,
+                'error_msg'=>"Ошибка обновления информации на сервере. Попробуйте ещё раз позже.",
+                "critical" => true
+            ]
+        ];
+
+        try {
+            if ($subOptions = (new SubscribeOptions())->getItem($sub_id)) {
+
+                $sdays = $subOptions['period'];
+                $model = new VKSubscriptionModel();
+                $expired = date('Y-m-d H:i:s', strtotime("+{$sdays} day"));
+
+                if ($sitem = $model->getItem($data['subscription_id'], 'vk_subscription_id')) {
+                    if (!$model->Update([
+                            'subscription_id' => $data['subscription_id'],
+                            'cancel_reason' => isset($data['cancel_reason']) ? $data['cancel_reason'] : '',
+                            'expired' => $data['pending_cancel'] == 1 ? $expired : null,
+                            'status' => $data['status']
+                        ], 'subscription_id')) {
+                        return $errorMsg;
+                    }
+                } else {
+                    $order_id = $model->Update([
+                        'vk_subscription_id' => $data['subscription_id'],
+                        'sub_id' => $sub_id,
+                        'vk_user_id' => $data['user_id'],
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'status' => $data['status']
+                    ]);
+                }
+
+                if ($user = (new VKUserModel())->getItem($data['user_id'], USERINDEX)) {
+
+                    (new NotificationsModel())->Update([
+                        'user_id' => $user['id'],
+                        'type' => 'subscription',
+                        'title' => $data['status'],
+                        'message' => json_encode($data, JSON_FLAGS)
+                    ]);
+
+                    return [
+                        "response" => [
+                            "subscription_id" => $data['subscription_id'], 
+                            "app_order_id" => $order_id
+                        ]
+                    ];
+                }
+            }
+        } catch(Exception $e) {
+            trace_error($e);
+        }
+
+        return $errorMsg;
     }
 
     /**

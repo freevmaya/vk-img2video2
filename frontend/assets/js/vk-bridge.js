@@ -397,8 +397,7 @@ class VKBridgeHandler {
                 .catch((error) => {
                     if (error.error_data && (error.error_data.error_reason = "User denied"))
                         this.showNotification("Ок, в следующий раз!");
-                    else console.log(error);
-                    reject(error);
+                    else reject(error);
                 });
             });
         }

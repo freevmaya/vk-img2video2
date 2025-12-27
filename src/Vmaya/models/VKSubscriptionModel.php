@@ -11,12 +11,12 @@ class VKSubscriptionModel extends BaseModel {
 				'type' => 'hidden',
 				'dbtype' => 'i'
 			],
-			'sub_id' => [
-				'label' => 'sub_id',
+			'vk_subscription_id' => [
+				'label' => 'vk_subscription_id',
 				'dbtype' => 'i'
 			],
-			'order_id' => [
-				'label' => 'order_id',
+			'sub_id' => [
+				'label' => 'sub_id',
 				'dbtype' => 'i'
 			],
 			'vk_user_id' => [
@@ -25,6 +25,18 @@ class VKSubscriptionModel extends BaseModel {
 			],
 			'created_at' => [
 				'label' => 'created_at',
+				'dbtype' => 's'
+			],
+			'status' => [
+				'label' => 'status',
+				'dbtype' => 's'
+			],
+			'cancel_reason' => [
+				'label' => 'cancel_reason',
+				'dbtype' => 's'
+			],
+			'expired' => [
+				'label' => 'expired',
 				'dbtype' => 's'
 			]
 		];
