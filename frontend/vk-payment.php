@@ -269,12 +269,13 @@ class PaymentProcess {
                 $sdays = $subOptions['period'];
                 $model = new VKSubscriptionModel();
                 $expired = date('Y-m-d H:i:s', strtotime("+{$sdays} day"));
+                $pending_cancel = isset($data['pending_cancel']) && ($data['pending_cancel'] == 1);
 
                 if ($sitem = $model->getItem($data['subscription_id'], 'vk_subscription_id')) {
                     if (!$model->Update([
                             'vk_subscription_id' => $data['subscription_id'],
                             'cancel_reason' => isset($data['cancel_reason']) ? $data['cancel_reason'] : '',
-                            'expired' => $expired,
+                            'expired' => $pending_cancel ? $expired : null,
                             'status' => $data['status']
                         ], 'vk_subscription_id')) {
                         return $errorMsg;
@@ -285,7 +286,6 @@ class PaymentProcess {
                         'vk_subscription_id' => $data['subscription_id'],
                         'sub_id'        => $sub_id,
                         'vk_user_id'    => $data['user_id'],
-                        'expired'       => $expired,
                         'created_at'    => date('Y-m-d H:i:s'),
                         'status'        => $data['status']
                     ]);
