@@ -346,16 +346,11 @@
         var SOCKET_ADDRESS = '<?=SOCKET_ADDRESS?>';
 
         $(document).ready(function() {
-            // Инициализация VK Bridge если мы в VK
             <?if (!DEV) {?>
                 if (typeof vkBridge !== 'undefined') {
                     vkBridge.send('VKWebAppInit', {});
                 }
             <?}?>
-            
-            // Загрузка данных пользователя и задач
-            // loadUserData();
-            // loadTasks();
         });
     </script>
 </body>

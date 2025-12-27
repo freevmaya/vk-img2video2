@@ -191,8 +191,10 @@ class Image2VideoApp {
 
     async continueGenerateVideo() {
 
-        console.log('continueGenerateVideo');
-        return false;
+        if (vkBridgeHandler.user.id == ) {
+            console.log('continueGenerateVideo');
+            return false;
+        }
 
         try {
             // Показываем индикатор загрузки
