@@ -343,7 +343,7 @@ class VKBridgeHandler {
             })
         else return this.bridge.send('VKWebAppShowOrderBox', {
             type: 'item', // Всегда должно быть 'item'
-            item: product_id
+            item: product_id ? product_id : 'one'
         })
         .then((data) => {
             console.log(data);

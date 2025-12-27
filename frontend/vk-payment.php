@@ -187,6 +187,15 @@ class PaymentProcess {
         GLOBAL $dbp;
 
         $item_id = $data['item'];
+        if ($item_id == 'one') {
+            return [
+                'response' => [
+                    'item_id' => $item_id,
+                    'title' => 'Разовая генерация',
+                    'price' => SITE_PRICE['vk']
+                ]
+            ]
+        }
         $item = $dbp->line("SELECT id AS item_id, name AS title, price FROM subscribe_options WHERE id={$item_id}");
         if ($item)  
             return [

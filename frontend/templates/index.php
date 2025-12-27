@@ -164,7 +164,7 @@
                         <small class="text-muted">Списание произойдет после генерации</small>
                     </div>
                     <div class="mt-3 footer">
-                        <button class="btn btn-primary me-2" onclick="app.generateVideo(50)" id="generateBtn">
+                        <button class="btn btn-primary me-2" onclick="app.generateVideo(<?=SITE_PRICE[$_SESSION['SITE']]?>)" id="generateBtn">
                             <i class="bi bi-magic me-2"></i>Создать видео
                         </button>
                     </div>
