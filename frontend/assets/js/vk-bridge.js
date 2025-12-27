@@ -368,8 +368,7 @@ class VKBridgeHandler {
                 this.currentPaymentPromise.reject(error);
             });
 
-            return this.currentPaymentPromise = new Promise((resolve, reject)=>{
-            });
+            return this.currentPaymentPromise = new Promise();
         }
     }
 
