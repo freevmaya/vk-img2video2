@@ -187,9 +187,12 @@ class WebSocketClient {
             }
         });
         
-        // Обработчик системных уведомлений
         this.on('system_notification', (data) => {
             this.showNotification(data.message, data.type || 'info');
+        });
+        
+        this.on('notification', (data) => {
+            console.log('Notification: ', data);
         });
     }
 
