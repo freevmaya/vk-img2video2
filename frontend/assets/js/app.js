@@ -5,7 +5,7 @@ class Image2VideoApp {
         this.selectedImage = null;
         this.currentTask = null;
         this.tasks = [];
-        this.paymentModal = null;
+        this.subscribeModal = null;
         this.avgTaskTime = 0;
         
         this.init();
@@ -191,6 +191,9 @@ class Image2VideoApp {
 
     async continueGenerateVideo() {
 
+        console.log('continueGenerateVideo');
+        return false;
+
         try {
             // Показываем индикатор загрузки
             this.showLoading(true);
@@ -219,7 +222,7 @@ class Image2VideoApp {
                 vkBridgeHandler.updateNotificationsAllowed();
                 $('#settingsSection').hide();
             } else {
-                throw new Error(result.message || 'Ошибка создания задания');
+                console.error(result.message || 'Ошибка создания задания');
             }
         } catch (error) {
             console.error('Generation error:', error);
@@ -482,13 +485,13 @@ class Image2VideoApp {
     }
 
     showSubscribesModal() {
-        let view = $('#paymentModal');
-        this.paymentModal  = new bootstrap.Modal(view[0]);
-        this.paymentModal.show();
+        let view = $('#subscribeModal');
+        this.subscribeModal  = new bootstrap.Modal(view[0]);
+        this.subscribeModal.show();
     }
 
     hideSubscribesModal() {
-        this.paymentModal.hide();
+        this.subscribeModal.hide();
     }
 
     // Обработка платежа
@@ -557,8 +560,7 @@ class Image2VideoApp {
     }
 
     initSubscribesDialog() {
-        let container = $('#payment-block');
-        let selected;
+        let selected = $('#subscribeModal .payment-option.active');
 
         function setSelected(ev) {
             let elem = ev.currentTarget;
@@ -569,18 +571,7 @@ class Image2VideoApp {
             }
         }
 
-        handlerCall({
-            action: 'get_subscribeOptions'
-        }).then((amounts)=>{
-            amounts.forEach(item => {
-                let def = parseInt(item.default) == 1;
-                let cstyle = def ? 'active' : '';
-                let elem = $(`<div class="payment-option ${cstyle}" data-price="${item.price}" data-id="${item.id}"><h5>${item.price} ₽</h5><small>${item.name}</small></div>`);
-                if (def) selected = elem[0];
-                elem.click(setSelected);
-                container.append(elem);
-            });
-        });        
+        $('#subscribeModal .payment-option').click(setSelected);
     }
 
     showModal(content, modalElementOrTitle) {

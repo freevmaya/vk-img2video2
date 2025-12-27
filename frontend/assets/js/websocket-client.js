@@ -186,9 +186,6 @@ class WebSocketClient {
                 app.showVideoResult(data.task);
             }
         });
-
-        this.on('notification', (data) => {
-        });
         
         // Обработчик системных уведомлений
         this.on('system_notification', (data) => {

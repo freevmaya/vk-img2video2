@@ -5,12 +5,11 @@ class SubscribeOptions extends BaseModel {
 		return 'subscribe_options';
 	}
 
-	public function ByArea($area_id) {
+	public function ByArea($area_id = null) {
 		GLOBAL $dbp;
 		if ($area_id)
 			return $dbp->asArray("SELECT s.*, a.currency FROM {$this->getTable()} s LEFT JOIN `areas` a ON s.area_id = a.id WHERE s.`area_id` LIKE '%{$area_id}%'");
-
-		return [];
+		else return $dbp->asArray("SELECT * FROM {$this->getTable()}");
 	}
 
 	public static function GetPrice($userId, $limitName='image_limit') {

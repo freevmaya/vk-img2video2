@@ -335,25 +335,36 @@ class VKBridgeHandler {
     }
 
     async VKWebAppShowOrderBox(product_id = 0) {
+
         if (ISDEV) 
             return new Promise((resolve, reject)=>{
                 resolve(true);
             })
         else return this.bridge.send('VKWebAppShowOrderBox', {
-            type: 'item', // Всегда должно быть 'item'
-            item: product_id ? product_id : 'one'
-        })
-        .then((data) => {
-            console.log(data);
-            if (data.success) {
-                this.showNotification('Платеж успешно выполнен!', 'success');
-                return true;
-            } else this.showNotification('Платеж не был завершен', 'warning');
-            return false;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+                type: 'item', // Всегда должно быть 'item'
+                item: product_id ? product_id : 'one'
+            })
+            .then((data) => {
+                console.log(data);
+                if (data.success) {
+
+                    function onNotification(data) {
+
+                        if (data.type == 'payment') {
+                            this.showNotification('Платеж успешно выполнен!', 'success');
+                            resolve(true);
+                        }
+                        webSocketClient.off('notification', onNotification);
+                    }
+
+                    webSocketClient.on('notification', onNotification);
+                    return true;
+                } else this.showNotification('Платеж не был завершен', 'warning');
+                return false;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     VKWebAppOpenPayForm() {

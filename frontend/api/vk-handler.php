@@ -42,9 +42,6 @@ try {
         case 'auth':
             $response = handleAuth($input['user'] ?? null);
             break;
-        case 'get_subscribeOptions':
-            $response = handleGetSubscribeOptions();
-            break;
         default:
             if (!checkAccess($input))
                 $response = ['success' => false, 'message' => 'Требуется авторизация'];
@@ -113,12 +110,6 @@ try {
 echo jsonEncodeSafe($response, ['hash', 'task_id']);
 
 $dbp->Close();
-
-function handleGetSubscribeOptions() {
-    GLOBAL $dbp;
-
-    return $dbp->asArray('SELECT * FROM subscribe_options');
-}
 
 function handleGetContent($template_name) {
     try {

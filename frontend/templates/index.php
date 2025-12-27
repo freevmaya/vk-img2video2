@@ -56,7 +56,7 @@
                     <div class="d-flex align-items-center">
                         <div class="user-subscribe">
                             <button class="btn btn-sm btn-outline-primary ms-2" onclick="app.showSubscribesModal()">
-                                <i class="bi bi-box"></i>
+                                <i class="bi bi-box"> Подписка</i>
                             </button>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
     </div>
 
     <!-- Модальные окна -->
-    <div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal fade" id="subscribeModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-top">
             <div class="modal-content glass-modal">
                 <div class="modal-header">
@@ -222,7 +222,17 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="payment-options" id="payment-block">
+                    <div class="payment-options">
+<?
+    $list = (new SubscribeOptions())->ByArea();
+    foreach ($list as $item) {
+        $cstyle = intval($item['default']) == 1 ? 'active' : '';
+        ?>
+        <div class="payment-option <?=$cstyle?>" data-price="<?=$item['price']?>" data-id="<?=$item['id']?>">
+            <h5><?=$item['name']?></h5><small><?=strEnum($item['price'], CURRENCY_PATTERN[$_SESSION['SITE']])?></small></div>
+        <?
+    }
+?>
                     </div>
                     <input type="hidden" id="selectedAmount" value="250">
                 </div>
