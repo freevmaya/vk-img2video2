@@ -283,10 +283,11 @@ class PaymentProcess {
                     $order_id = $model->Update([
                         'user_id' => $user['id'],
                         'vk_subscription_id' => $data['subscription_id'],
-                        'sub_id' => $sub_id,
-                        'vk_user_id' => $data['user_id'],
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'status' => $data['status']
+                        'sub_id'        => $sub_id,
+                        'vk_user_id'    => $data['user_id'],
+                        'expired'       => $expired,
+                        'created_at'    => date('Y-m-d H:i:s'),
+                        'status'        => $data['status']
                     ]);
 
                     $sitem = $model->getItem($order_id);
