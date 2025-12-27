@@ -336,7 +336,7 @@ class VKBridgeHandler {
         }
     }
 
-    async VKWebAppShowOrderBox(product_id) {
+    async VKWebAppShowOrderBox(product_id = 0) {
         if (ISDEV) 
             return new Promise((resolve, reject)=>{
                 resolve(true);
