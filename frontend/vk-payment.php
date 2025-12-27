@@ -191,7 +191,7 @@ class PaymentProcess {
             return [
                 'response' => [
                     'item_id' => $item_id,
-                    'title' => 'Разовая генерация',
+                    'title' => 'Разовая генерация. Можете воспользоваться бесплатным периодом (см. подписка).',
                     'price' => SITE_PRICE['vk']
                 ]
             ];
