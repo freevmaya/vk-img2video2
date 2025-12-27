@@ -162,7 +162,7 @@ class PaymentProcess {
                 default: 
                     http_response_code(500);
                     logPayment('Неизвестный "notification_type". Parsed data: '.$json_data, true);
-                    $result = get_error_response('Неизвестный "notification_type"');
+                    $result = get_error_response("Неизвестный notification_type: {$data['notification_type']}");
             }
 
             http_response_code(200);
