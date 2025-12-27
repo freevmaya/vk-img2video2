@@ -216,7 +216,7 @@ class Image2VideoApp {
                 this.showNotification('Задание на генерацию создано!', 'success');
                 this.addTaskToList(result.hash);
 
-                vkBridgeHandler.updateNotificationsAllowed();
+                //vkBridgeHandler.updateNotificationsAllowed();
                 $('#settingsSection').hide();
             } else {
                 console.error(result.message || 'Ошибка создания задания');
