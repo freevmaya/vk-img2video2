@@ -8,7 +8,7 @@ class VKBridgeHandler {
         this.selected = null;
         this.currentNotify = null;
         this.notification = null;
-        this.currentPaymentPromise = null;
+        this.currentPaymentResolve = null;
     }
 
     // Инициализация VK Bridge
@@ -341,9 +341,10 @@ class VKBridgeHandler {
     onNotification(data) {
         if (data.notify.type == 'payment') {
             vkBridgeHandler.showNotification('Платеж успешно выполнен!', 'success');
-            if (this.currentPaymentPromise)
-                this.currentPaymentPromise.resolve(true);
+            if (this.currentPaymentResolve)
+                this.currentPaymentResolve(data.notify);
         }
+        this.currentPaymentResolve = null;
     }
 
     async VKWebAppShowOrderBox(product_id = 0) {
@@ -353,7 +354,9 @@ class VKBridgeHandler {
                 resolve(true);
             })
         else {
-            return this.currentPaymentPromise = new Promise((resolve, reject)=>{
+
+            return new Promise((resolve, reject)=>{
+                this.currentPaymentResolve = resolve;
                 this.bridge.send('VKWebAppShowOrderBox', {
                     type: 'item', // Всегда должно быть 'item'
                     item: product_id ? product_id : 'one'
