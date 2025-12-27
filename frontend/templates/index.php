@@ -238,7 +238,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" onclick="processSubscribe(); hidePaymentModal();">Оплатить</button>
+                    <button type="button" class="btn btn-primary" onclick="app.processSubscribe();">Оплатить</button>
                 </div>
             </div>
         </div>

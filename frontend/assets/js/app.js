@@ -491,25 +491,12 @@ class Image2VideoApp {
         this.subscribeModal.hide();
     }
 
-    // Обработка платежа
+    // Обработка выбора подписки
     async processSubscribe() {
+        this.hideSubscribesModal();
         let active = $('.payment-option.active');
-        if (active.length > 0) {
-            let id = active.data('id');
-
-            if (ISDEV) {
-                let result = await handlerCall({action: 'update_subscribe', id: id});
-                if (result.success)
-                    this.updateSubscribe(id);
-            } else {
-                try {
-                    return vkBridgeHandler.initPayment(id);
-                } catch (error) {
-                    console.error('Payment processing error:', error);
-                    this.showNotification('Ошибка при обработке платежа', 'error');
-                }
-            }
-        }
+        if (active.length)
+            vkBridgeHandler.VKWebAppShowSubscriptionBox(active.data('id'));
     }
 
     // Показ индикатора загрузки

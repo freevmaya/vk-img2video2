@@ -374,6 +374,34 @@ class VKBridgeHandler {
         }
     }
 
+    async VKWebAppShowSubscriptionBox(product_id = 0) {
+
+        if (ISDEV) 
+            return new Promise((resolve, reject)=>{
+                resolve(true);
+            })
+        else {
+
+            return new Promise((resolve, reject)=>{
+                this.currentPaymentResolve = resolve;
+                this.bridge.send('VKWebAppShowSubscriptionBox', {
+                    action: 'create',
+                    item: 'subscription-' + product_id
+                })
+                .then((data) => {
+                    if (!data.success) {
+                       resolve(true);
+                    } else reject(data);
+                    return data.success;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    reject(error);
+                });
+            });
+        }
+    }
+
     VKWebAppOpenPayForm() {
         this.bridge.send('VKWebAppOpenPayForm', {app_id: 6909581,
             action: 'pay-to-user',
