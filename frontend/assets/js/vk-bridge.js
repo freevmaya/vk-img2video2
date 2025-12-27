@@ -345,12 +345,10 @@ class VKBridgeHandler {
         })
         .then((data) => {
             console.log(data);
-            if (data.status) {
-                if (data.success) {
-                    this.showNotification('Платеж успешно выполнен!', 'success');
-                    return true;
-                } else this.showNotification('Платеж не был завершен', 'warning');
-            }
+            if (data.success) {
+                this.showNotification('Платеж успешно выполнен!', 'success');
+                return true;
+            } else this.showNotification('Платеж не был завершен', 'warning');
             return false;
         })
         .catch((error) => {

@@ -331,10 +331,6 @@ class WebSocketServer {
                     await this.handleUnsubscribe(userId, message.task_id);
                     break;
                     
-                case 'get_balance':
-                    await this.sendBalance(userId);
-                    break;
-                    
                 case 'ping':
                     ws.send(JSON.stringify({ type: 'pong', timestamp: Date.now() }));
                     break;
@@ -627,19 +623,11 @@ class WebSocketServer {
                 const ws = this.ws(strid);
                 if (ws) {
                     try {
-                        switch (item.type) {
-                            case 'payment':
-                                await this.sendBalance(strid);
-                                await this.setReadNotification(item.id);
-                                break;
-                            default:
-                                ws.send(JSON.stringify({
-                                    type: 'notification',
-                                    notify: item
-                                }));
-                                await this.setReadNotification(item.id);
-                                break;
-                        }
+                        ws.send(JSON.stringify({
+                            type: 'notification',
+                            notify: item
+                        }));
+                        await this.setReadNotification(item.id);
                     } catch (error) {
                         console.error('Error processing notification:', error);
                     }
