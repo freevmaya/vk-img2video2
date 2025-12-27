@@ -648,13 +648,12 @@ class WebSocketServer {
 
             promise.then(async (result) => {
                     if (result.status) {
+                        await generateThumbnail(result.path, this.THUMBNAIL_PATH, 1, 50);
                         await this.setProcessedTask(ws, item);
                         await this.executeQuery(
                             "UPDATE task SET state = 'finished' WHERE hash = ?",
                             [item.task_id]
                         );
-
-                        generateThumbnail(result.path, this.THUMBNAIL_PATH, 1, 50);
                     }
 
                     delete this.downloadPromises[item.task_id];

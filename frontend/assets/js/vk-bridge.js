@@ -48,7 +48,7 @@ class VKBridgeHandler {
     }
 
     async getAccessToken(a_scope) {
-        if (this.bridge) {
+        if (this.bridge && a_scope) {
             return await this.bridge.send('VKWebAppGetAuthToken', { 
                 app_id: APP_ID, 
                 scope: a_scope
