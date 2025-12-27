@@ -353,22 +353,21 @@ class VKBridgeHandler {
                 resolve(true);
             })
         else {
-
-            this.bridge.send('VKWebAppShowOrderBox', {
-                type: 'item', // Всегда должно быть 'item'
-                item: product_id ? product_id : 'one'
-            })
-            .then((data) => {
-                if (!data.success) this.showNotification('Платеж не был завершен', 'warning');
-                else this.currentPaymentPromise.reject(data);
-                return data.success;
-            })
-            .catch((error) => {
-                console.log(error);
-                this.currentPaymentPromise.reject(error);
+            return this.currentPaymentPromise = new Promise((resolve, reject)=>{
+                this.bridge.send('VKWebAppShowOrderBox', {
+                    type: 'item', // Всегда должно быть 'item'
+                    item: product_id ? product_id : 'one'
+                })
+                .then((data) => {
+                    if (!data.success) this.showNotification('Платеж не был завершен', 'warning');
+                    else reject(data);
+                    return data.success;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    reject(error);
+                });
             });
-
-            return this.currentPaymentPromise = new Promise();
         }
     }
 
