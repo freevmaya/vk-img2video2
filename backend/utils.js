@@ -115,7 +115,7 @@ async function main() {
 exports.downloadWithAxios = async function(url, outputPath, filename = null) {
     return new Promise((resolve, reject) => {
         try {
-            const response = await axios({
+            axios({
                 method: 'GET',
                 url: url,
                 responseType: 'stream', // Важно для больших файлов
@@ -123,47 +123,53 @@ exports.downloadWithAxios = async function(url, outputPath, filename = null) {
                     'User-Agent': 'Mozilla/5.0 (Node.js Downloader)'
                 },
                 timeout: 30000
-            });
+            })
+            .then((response)=>{
             
-            if (!filename) {
-                // Определяем имя файла
-                filename = path.basename(url);
-                const contentDisposition = response.headers['content-disposition'];
-                
-                if (contentDisposition) {
-                    const match = contentDisposition.match(/filename="?(.+?)"?$/);
-                    if (match) filename = match[1];
+                if (!filename) {
+                    // Определяем имя файла
+                    filename = path.basename(url);
+                    const contentDisposition = response.headers['content-disposition'];
+                    
+                    if (contentDisposition) {
+                        const match = contentDisposition.match(/filename="?(.+?)"?$/);
+                        if (match) filename = match[1];
+                    }
                 }
-            }
-            
-            let ext = null;
-            // Если имя файла не содержит расширения, добавляем из Content-Type
-            if (!path.extname(filename) && response.headers['content-type']) {
-                ext = getExtensionFromMime(response.headers['content-type']);
-                if (ext) filename += `.${ext}`;
-            }
-            
-            const filePath = outputPath + filename;
-            
-            // Создаем поток для записи
-            const writer = fs.createWriteStream(filePath);
-            
-            // Записываем файл
-            response.data.pipe(writer);        
-            
-            writer.on('finish', () => {
-                resolve({
-                    path: filePath,
-                    filename: filename,
-                    size: fs.statSync(filePath).size,
-                    contentType: response.headers['content-type'],
-                    status: response.status
+                
+                let ext = null;
+                // Если имя файла не содержит расширения, добавляем из Content-Type
+                if (!path.extname(filename) && response.headers['content-type']) {
+                    ext = getExtensionFromMime(response.headers['content-type']);
+                    if (ext) filename += `.${ext}`;
+                }
+                
+                const filePath = outputPath + filename;
+                
+                // Создаем поток для записи
+                const writer = fs.createWriteStream(filePath);
+                
+                // Записываем файл
+                response.data.pipe(writer);        
+                
+                writer.on('finish', () => {
+                    resolve({
+                        path: filePath,
+                        filename: filename,
+                        size: fs.statSync(filePath).size,
+                        contentType: response.headers['content-type'],
+                        status: response.status
+                    });
                 });
-            });
-            
-            writer.on('error', (err) => {
-                fs.unlink(filePath, () => {});
-                reject(err);
+                
+                writer.on('error', (err) => {
+                    fs.unlink(filePath, () => {});
+                    reject(err);
+                });
+            })
+            .catch((error)=>{
+                console.error(`Ошибка загрузки: ${error.message}`);
+                reject(error);
             });
             
         } catch (error) {
