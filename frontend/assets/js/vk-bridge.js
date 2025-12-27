@@ -8,6 +8,7 @@ class VKBridgeHandler {
         this.selected = null;
         this.currentNotify = null;
         this.notification = null;
+        this.currentPaymentPromise = null;
     }
 
     // Инициализация VK Bridge
@@ -109,6 +110,9 @@ class VKBridgeHandler {
                 localStorage.setItem('user_id', result.user.id);
 
                 WebSocketClient.Initialize();
+
+
+                webSocketClient.off('notification', this.onNotification.bind(this));
 
                 app.loadTasks();
             }
@@ -334,6 +338,14 @@ class VKBridgeHandler {
         }
     }
 
+    onNotification(data) {
+        if (data.notify.type == 'payment') {
+            vkBridgeHandler.showNotification('Платеж успешно выполнен!', 'success');
+            if (this.currentPaymentPromise)
+                this.currentPaymentPromise.resolve(true);
+        }
+    }
+
     async VKWebAppShowOrderBox(product_id = 0) {
 
         if (ISDEV) 
@@ -348,29 +360,15 @@ class VKBridgeHandler {
             })
             .then((data) => {
                 if (!data.success) this.showNotification('Платеж не был завершен', 'warning');
-
+                else this.currentPaymentPromise.reject(data);
                 return data.success;
             })
             .catch((error) => {
                 console.log(error);
+                this.currentPaymentPromise.reject(error);
             });
 
-            return new Promise((resolve, reject)=>{
-
-                function onNotification(data) {
-                    if (data.notify.type == 'payment') {
-                        this.showNotification('Платеж успешно выполнен!', 'success');
-                        resolve(true);
-                    }
-                    webSocketClient.off('notification', onNotification);
-                }
-
-                webSocketClient.on('notification', onNotification);
-
-                setTimeout(()=>{
-                    webSocketClient.off('notification', onNotification);
-                    reject();
-                }, 10000);
+            return this.currentPaymentPromise = new Promise((resolve, reject)=>{
             });
         }
     }
