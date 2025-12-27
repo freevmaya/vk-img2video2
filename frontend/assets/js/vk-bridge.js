@@ -112,7 +112,7 @@ class VKBridgeHandler {
                 WebSocketClient.Initialize();
 
 
-                webSocketClient.off('notification', this.onNotification.bind(this));
+                webSocketClient.on('notification', this.onNotification.bind(this));
 
                 app.loadTasks();
             }
