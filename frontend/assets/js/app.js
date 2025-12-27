@@ -487,13 +487,8 @@ class Image2VideoApp {
         this.subscribeModal.show();
     }
 
-    hideSubscribesModal() {
-        this.subscribeModal.hide();
-    }
-
     // Обработка выбора подписки
     async processSubscribe() {
-        this.hideSubscribesModal();
         let active = $('.payment-option.active');
         if (active.length)
             vkBridgeHandler.VKWebAppShowSubscriptionBox(active.data('id'));

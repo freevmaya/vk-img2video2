@@ -214,12 +214,12 @@
     </div>
 
     <!-- Модальные окна -->
-    <div class="modal fade" id="subscribeModal" tabindex="-1">
+    <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-top">
             <div class="modal-content glass-modal">
                 <div class="modal-header">
                     <h5 class="modal-title">Варианты подписки</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" onclick="closeModal(this)"></button>
                 </div>
                 <div class="modal-body">
                     <div class="payment-options">
@@ -234,11 +234,10 @@
     }
 ?>
                     </div>
-                    <input type="hidden" id="selectedAmount" value="250">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" onclick="app.processSubscribe();">Оплатить</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal(this)">Отмена</button>
+                    <button type="button" class="btn btn-primary" onclick="closeModal(this); app.processSubscribe();">Подписаться</button>
                 </div>
             </div>
         </div>
@@ -252,13 +251,13 @@
                     <h5 class="modal-title">
                         <i class="bi bi-file-text me-2"></i>Пользовательское соглашение
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" onclick="closeModal(this)"></button>
                 </div>
                 <div class="modal-body" id="agreementContent">
                     <!-- Контент будет загружен динамически -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal(this)">
                         <i class="bi bi-x-circle me-1"></i>Закрыть
                     </button>
                     <button type="button" class="btn btn-outline-primary" onclick="app.printAgreement()">
@@ -280,7 +279,7 @@
                     <h5 class="modal-title">
                         <i class="bi bi-file-text me-2"></i>Опубликовать видео
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" onclick="closeModal(this)"></button>
                 </div>
                 <div class="modal-body" id="publishContent">
                     <div class="payment-options" id="payment-block">
@@ -291,7 +290,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal(this)">
                         <i class="bi bi-x-circle me-1"></i>Закрыть
                     </button>
                 </div>
@@ -307,12 +306,12 @@
                     <h5 class="modal-title">
                         <i class="bi bi-file-text me-2"></i><span></span>
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" onclick="closeModal(this)"></button>
                 </div>
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal(this)">
                         <i class="bi bi-x-circle me-1"></i>Закрыть
                     </button>
                 </div>
@@ -345,13 +344,13 @@
         var ISDEV = <?=DEV ? 'true' : 'false'?>;
         var SOCKET_ADDRESS = '<?=SOCKET_ADDRESS?>';
 
+        <?if (!DEV) {?>
         $(document).ready(function() {
-            <?if (!DEV) {?>
-                if (typeof vkBridge !== 'undefined') {
-                    vkBridge.send('VKWebAppInit', {});
-                }
-            <?}?>
+            if (typeof vkBridge !== 'undefined') {
+                vkBridge.send('VKWebAppInit', {});
+            }
         });
+        <?}?>
     </script>
 </body>
 </html>

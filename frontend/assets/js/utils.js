@@ -240,3 +240,7 @@ function strEnum(number, pattern, lang = 'ru') {
         return `${number} ${base}`;
     }
 }
+
+function closeModal(elem) {
+    $(elem).blur().closest('.modal').modal('hide');
+}
