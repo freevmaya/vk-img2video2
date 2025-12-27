@@ -239,7 +239,7 @@ class PaymentProcess {
                 ];
             }
         } catch(Exception $e) {
-            trace_error($e);
+            logPayment($e, true);
         }
 
         return [
@@ -308,7 +308,7 @@ class PaymentProcess {
                 ];
             }
         } catch(Exception $e) {
-            trace_error($e);
+            logPayment($e, true);
         }
 
         return $errorMsg;
