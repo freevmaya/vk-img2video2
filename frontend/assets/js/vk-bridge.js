@@ -342,16 +342,12 @@ class VKBridgeHandler {
             })
         else {
 
-            let promise = this.bridge.send('VKWebAppShowOrderBox', {
+            this.bridge.send('VKWebAppShowOrderBox', {
                 type: 'item', // Всегда должно быть 'item'
                 item: product_id ? product_id : 'one'
             })
             .then((data) => {
                 if (!data.success) this.showNotification('Платеж не был завершен', 'warning');
-
-                setTimeout(()=>{
-                    webSocketClient.off('notification', onNotification);
-                }, 5000);
 
                 return data.success;
             })
@@ -359,17 +355,23 @@ class VKBridgeHandler {
                 console.log(error);
             });
 
-            function onNotification(data) {
-                if (data.type == 'payment') {
-                    this.showNotification('Платеж успешно выполнен!', 'success');
-                    promise.resolve(true);
+            return new Promise((resolve, reject)=>{
+
+                function onNotification(data) {
+                    if (data.notify.type == 'payment') {
+                        this.showNotification('Платеж успешно выполнен!', 'success');
+                        resolve(true);
+                    }
+                    webSocketClient.off('notification', onNotification);
                 }
-                webSocketClient.off('notification', onNotification);
-            }
 
-            webSocketClient.on('notification', onNotification);
+                webSocketClient.on('notification', onNotification);
 
-            return promise;
+                setTimeout(()=>{
+                    webSocketClient.off('notification', onNotification);
+                    reject();
+                }, 10000);
+            });
         }
     }
 
