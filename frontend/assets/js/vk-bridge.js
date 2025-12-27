@@ -382,7 +382,7 @@ class VKBridgeHandler {
         }
 
         try {
-            this.VKWebAppShowOrderBox(product_id);            
+            return this.VKWebAppShowOrderBox(product_id);            
         } catch (error) {
             console.error('Payment error:', error);
             this.showNotification('Ошибка при оплате', 'error');

@@ -243,7 +243,7 @@ class Image2VideoApp {
         }
 
         if (price)
-            vkBridgeHandler.VKWebAppShowOrderBox()
+            vkBridgeHandler.initPayment()
                 .then((result)=>{
                     if (result)
                         this.continueGenerateVideo();
@@ -495,7 +495,6 @@ class Image2VideoApp {
     async processSubscribe() {
         let active = $('.payment-option.active');
         if (active.length > 0) {
-            let price = active.data('price');
             let id = active.data('id');
 
             if (ISDEV) {
@@ -504,8 +503,7 @@ class Image2VideoApp {
                     this.updateSubscribe(id);
             } else {
                 try {
-                    if (vkBridgeHandler.isInVK())
-                        await vkBridgeHandler.initPayment(id);
+                    return vkBridgeHandler.initPayment(id);
                 } catch (error) {
                     console.error('Payment processing error:', error);
                     this.showNotification('Ошибка при обработке платежа', 'error');
