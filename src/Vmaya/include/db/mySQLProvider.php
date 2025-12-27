@@ -101,12 +101,15 @@
 		            	$params[$key] = json_encode($value);
 		            $i++;
 		        }
-				$stmt->bind_param($types, ...$params);
 
-				$result = $stmt->execute();
-				$stmt->store_result();
+		        if (strlen($types) == count($params)) {
+					$stmt->bind_param($types, ...$params);
 
-				$stmt->close();
+					$result = $stmt->execute();
+					$stmt->store_result();
+
+					$stmt->close();
+				} else  $this->error('count($parameters) != strlen($types)');
 			} catch (Exception $e) {
 				if ($this->isConnectionError($e->getMessage())) {
 	                $this->reconnect();
