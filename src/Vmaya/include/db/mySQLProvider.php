@@ -102,6 +102,7 @@
 		            $i++;
 		        }
 
+		        //trace($types.' '.json_encode($params));
 		        if (strlen($types) == count($params)) {
 					$stmt->bind_param($types, ...$params);
 
