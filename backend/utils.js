@@ -168,7 +168,7 @@ exports.downloadWithAxios = async function(url, outputPath, filename = null) {
         });
         
     } catch (error) {
-        throw new Error(`Ошибка загрузки: ${error.message}`);
+        console.error(`Ошибка загрузки: ${error.message}`);
     }
 }
 
