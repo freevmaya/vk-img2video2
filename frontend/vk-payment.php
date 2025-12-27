@@ -288,7 +288,8 @@ class PaymentProcess {
                         'sub_id'        => $sub_id,
                         'vk_user_id'    => $data['user_id'],
                         'created_at'    => date('Y-m-d H:i:s'),
-                        'status'        => $data['status']
+                        'status'        => $data['status'],
+                        'expired'       => $expired
                     ]);
 
                     $sitem = $model->getItem($order_id);
