@@ -263,7 +263,8 @@ class PaymentProcess {
         ];
 
         try {
-            if ($subOptions = (new SubscribeOptions())->getItem($sub_id)) {
+            if (($subOptions = (new SubscribeOptions())->getItem($sub_id)) &&
+                ($user = (new VKUserModel())->getItem($data['user_id'], USERINDEX))) {
 
                 $sdays = $subOptions['period'];
                 $model = new VKSubscriptionModel();
@@ -280,6 +281,7 @@ class PaymentProcess {
                     }
                 } else {
                     $order_id = $model->Update([
+                        'user_id' => $user['id'],
                         'vk_subscription_id' => $data['subscription_id'],
                         'sub_id' => $sub_id,
                         'vk_user_id' => $data['user_id'],
@@ -290,22 +292,19 @@ class PaymentProcess {
                     $sitem = $model->getItem($order_id);
                 }
 
-                if ($user = (new VKUserModel())->getItem($data['user_id'], USERINDEX)) {
+                (new NotificationsModel())->Update([
+                    'user_id' => $user['id'],
+                    'type' => 'subscription',
+                    'title' => $data['status'],
+                    'message' => json_encode($sitem, JSON_FLAGS)
+                ]);
 
-                    (new NotificationsModel())->Update([
-                        'user_id' => $user['id'],
-                        'type' => 'subscription',
-                        'title' => $data['status'],
-                        'message' => json_encode($sitem, JSON_FLAGS)
-                    ]);
-
-                    return [
-                        "response" => [
-                            "subscription_id" => $data['subscription_id'], 
-                            "app_order_id" => $order_id
-                        ]
-                    ];
-                }
+                return [
+                    "response" => [
+                        "subscription_id" => $data['subscription_id'], 
+                        "app_order_id" => $order_id
+                    ]
+                ];
             }
         } catch(Exception $e) {
             trace_error($e);

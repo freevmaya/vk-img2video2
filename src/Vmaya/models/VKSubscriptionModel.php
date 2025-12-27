@@ -11,6 +11,10 @@ class VKSubscriptionModel extends BaseModel {
 				'type' => 'hidden',
 				'dbtype' => 'i'
 			],
+			'user_id' => [
+				'label' => 'user_id',
+				'dbtype' => 'i'
+			],
 			'vk_subscription_id' => [
 				'label' => 'vk_subscription_id',
 				'dbtype' => 'i'
