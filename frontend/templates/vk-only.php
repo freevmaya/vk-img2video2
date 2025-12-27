@@ -69,7 +69,7 @@
         <p>Для использования откройте приложение через ВКонтакте:</p>
         
         <div style="margin: 30px 0;">
-            <a href="https://vk.com/app<?php echo VK_APP_ID; ?>" class="vk-button">
+            <a href="https://vk.com/app<?php echo APP_ID['vk']; ?>" class="vk-button">
                 🔗 Открыть в VK
             </a>
         </div>
@@ -81,14 +81,14 @@
         <div class="qr-code">
             <?php 
             // Генерация QR-кода с ссылкой на приложение
-            $appUrl = "https://vk.com/app" . VK_APP_ID;
+            $appUrl = "https://vk.com/app" . APP_ID['vk'];
             $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($appUrl);
             ?>
             <img src="<?php echo $qrUrl; ?>" alt="QR Code" width="150" height="150">
         </div>
         
         <div style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">
-            <p>ID приложения: <strong><?php echo VK_APP_ID; ?></strong></p>
+            <p>ID приложения: <strong><?php echo APP_ID['vk']; ?></strong></p>
             <p>Если вы разработчик, установите <code>DEV = true</code> в config.php</p>
         </div>
     </div>

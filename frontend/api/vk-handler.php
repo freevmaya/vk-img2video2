@@ -17,9 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 session_start();
 
-if (!isset($_SESSION['USERINDEX'])) {
+if (!isset($_SESSION['USERINDEX']) || !isset($_SESSION['SITE'])) {
     http_response_code(403);
-    echo "{'error'=>'Unknown user index'}";
+    if (DEV)
+        echo "{'error'=>'Session data is wrong', 'data'=>".json_encode($_SESSION, true)."}";
+    else 
+        echo "{'error'=>'Session data is wrong'}";
     exit;
 }
 
@@ -129,7 +132,7 @@ function handleGetContent($template_name) {
         // Читаем содержимое файла
         $content = file_get_contents($agreementFile);
 
-        $app_url = $_SESSION['USERINDEX'] == 'vk_user_id' ? VK_APP_URL : OK_APP_URL;
+        $app_url = APP_URL[$_SESSION['SITE']];
 
         
         // Заменяем переменные
@@ -261,14 +264,6 @@ function handleCreateTask($taskData) {
     
     try {
         $tmodel = new TransactionsModel();
-        // Проверяем баланс пользователя
-        $user_id = $_SESSION['user_id'];
-        $balance = $tmodel->Balance($user_id);
-        $user = $userModel->getItem($user_id);
-        
-        if (!$user || $balance < ($taskData['price'] ?? 50)) {
-            return ['success' => false, 'message' => 'Недостаточно средств на балансе'];
-        }
         
         // Сохраняем изображения
         $imageURL = saveImage($taskData['image'], $_SESSION['user_id']);
@@ -284,7 +279,6 @@ function handleCreateTask($taskData) {
             return ['success' => false, 'message' => 'Ошибка создания задачи в Kling API'];
 
         $hash = $response['data']['task_id'];
-        (new VKUserModel())->ChangeBalance($user_id, $hash, -$taskData['price'], 'prepare', $taskData);
         
         return [
             'success' => true,

@@ -175,7 +175,7 @@ class PaymentProcess {
             return ['error_msg' => 'Invalid signature', 'error_code' => 10];
         }
 
-        if ($data['app_id'] != VK_APP_ID) {
+        if ($data['app_id'] != APP_ID['vk']) {
             http_response_code(403);
             return ['error_msg' => 'Invalid app_id', 'error_code' => 11];
         }
@@ -439,7 +439,7 @@ class PaymentProcess {
             logPayment("=== Тестовый запрос ===");
             
             $testData = [
-                'user_id' => ADMIN_USERID_VK,
+                'user_id' => SITE_ADMIN_USERID['vk'],
                 'notification_type' => 'order_status_change',
                 'item_id' => '2',
                 'order_id' => time(),

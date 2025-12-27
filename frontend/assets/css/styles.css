@@ -217,10 +217,6 @@ select option {
 
 
 .price-display {
-    padding: 20px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(159, 122, 234, 0.1));
-    border-radius: 12px;
-    border: 1px solid rgba(102, 126, 234, 0.3);
 }
 
 
@@ -342,7 +338,7 @@ select option {
     font-size: 5rem;
     width: 100%;
     text-align: center;
-    margin-top: calc(50% - 6rem);
+    margin-top: calc(50% - 5rem);
     color: #ffffff6e;
     transition: color, margin-top 0.5s;
 }
@@ -352,7 +348,7 @@ select option {
 }
 
 .video-preview:hover .bi::before {
-    margin-top: calc(50% - 5.8rem);
+    margin-top: calc(50% - 4.8rem);
 }
 
 .payment-options {
@@ -382,7 +378,7 @@ select option {
 }
 
 
-.user-balance {
+.user-subscribe {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 1rem;
     padding: 0.8rem;

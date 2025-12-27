@@ -48,19 +48,21 @@ class VKBridgeHandler {
     }
 
     async getAccessToken(a_scope) {
-
-        return await this.bridge.send('VKWebAppGetAuthToken', { 
-            app_id: VK_APP_ID, 
-            scope: a_scope
-        }).then( (data) => { 
-            if (data.access_token) {
-                return data.access_token;
-              // Ключ доступа пользователя получен
-            }
-        }).catch((error) => {
-            // Ошибка
-            console.error(error);
-        });
+        if (this.bridge) {
+            return await this.bridge.send('VKWebAppGetAuthToken', { 
+                app_id: APP_ID, 
+                scope: a_scope
+            }).then( (data) => { 
+                if (data.access_token) {
+                    return data.access_token;
+                  // Ключ доступа пользователя получен
+                }
+            }).catch((error) => {
+                // Ошибка
+                console.error(error);
+                return false;
+            });
+        } else return false;
     }
 
     async setUserData(userData) {
@@ -108,9 +110,6 @@ class VKBridgeHandler {
                 //console.log('User data saved on server');
                 localStorage.setItem('user_id', result.user.id);
 
-                // Обновляем интерфейс
-                this.updateUserInterface(result.user);
-
                 WebSocketClient.Initialize();
 
                 app.loadTasks();
@@ -118,11 +117,6 @@ class VKBridgeHandler {
         } catch (error) {
             console.error('Error sending user data to server:', error);
         }
-    }
-
-    // Обновление интерфейса пользователя
-    updateUserInterface(user) {
-        $('#userBalance').text(`${user.balance || 0} ₽`);
     }
 
     async ApiMethod(permission, a_method, a_params) {
@@ -342,10 +336,14 @@ class VKBridgeHandler {
         }
     }
 
-    VKWebAppShowOrderBox() {
-        this.bridge.send('VKWebAppShowOrderBox', {
+    async VKWebAppShowOrderBox(product_id) {
+        if (ISDEV) 
+            return new Promise((resolve, reject)=>{
+                resolve(true);
+            })
+        else return this.bridge.send('VKWebAppShowOrderBox', {
             type: 'item', // Всегда должно быть 'item'
-            item: id
+            item: product_id
         })
         .then((data) => {
             console.log(data);
@@ -353,11 +351,9 @@ class VKBridgeHandler {
                 if (data.success) {
                     this.showNotification('Платеж успешно выполнен!', 'success');
                     return true;
-                } else {
-                    this.showNotification('Платеж не был завершен', 'warning');
-                    return false;
-                }
+                } else this.showNotification('Платеж не был завершен', 'warning');
             }
+            return false;
         })
         .catch((error) => {
             console.log(error);
@@ -383,14 +379,14 @@ class VKBridgeHandler {
     }
 
     // Инициализация платежей
-    async initPayment(id, price, description) {
+    async initPayment(product_id) {
         if (!this.bridge) {
             this.showNotification('Оплата доступна только в приложении VK', 'warning');
             return false;
         }
 
         try {
-            this.VKWebAppOpenPayForm();            
+            this.VKWebAppShowOrderBox(product_id);            
         } catch (error) {
             console.error('Payment error:', error);
             this.showNotification('Ошибка при оплате', 'error');
@@ -469,7 +465,7 @@ class VKBridgeHandler {
                     no_comments: 0, // Разрешить комментарии
                     repeat: 0, // Не повторять видео
                     compression: 1, // Использовать сжатие
-                    attachments: 'app' + VK_APP_ID
+                    attachments: 'app' + APP_ID
                 };
 
                 if (albumId) data['album_id'] = albumId;
@@ -495,7 +491,7 @@ class VKBridgeHandler {
                             this.ApiMethod('video', 'video.save', Object.assign({
                                 video_id: videoId,
                                 owner_id: this.user.id,
-                                attachments: 'app' + VK_APP_ID,
+                                attachments: 'app' + APP_ID,
                                 is_private: 0
                             }, data))
                             .then((saveResult)=>{                            

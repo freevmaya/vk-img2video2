@@ -54,10 +54,9 @@
                 
                 <div class="user-section" id="userSection">
                     <div class="d-flex align-items-center">
-                        <div class="user-balance">
-                            <span class="balance-amount" id="userBalance"></span>
-                            <button class="btn btn-sm btn-outline-primary ms-2" onclick="showPaymentModal()">
-                                <i class="bi bi-plus-circle"></i>
+                        <div class="user-subscribe">
+                            <button class="btn btn-sm btn-outline-primary ms-2" onclick="app.showSubscribesModal()">
+                                <i class="bi bi-box"></i>
                             </button>
                         </div>
                     </div>
@@ -161,11 +160,11 @@
                     </div>
                     
                     <div class="price-display text-center">
-                        <h4>Стоимость: <span class="text-primary" id="priceDisplay">50 ₽</span></h4>
+                        <div>Стоимость: <span class="text-primary" id="priceDisplay"><?=strEnum(50, CURRENCY_PATTERN[$_SESSION['SITE']])?></span></div>
                         <small class="text-muted">Списание произойдет после генерации</small>
                     </div>
                     <div class="mt-3 footer">
-                        <button class="btn btn-primary me-2" onclick="generateVideo()" id="generateBtn">
+                        <button class="btn btn-primary me-2" onclick="app.generateVideo(50)" id="generateBtn">
                             <i class="bi bi-magic me-2"></i>Создать видео
                         </button>
                     </div>
@@ -219,7 +218,7 @@
         <div class="modal-dialog modal-dialog-top">
             <div class="modal-content glass-modal">
                 <div class="modal-header">
-                    <h5 class="modal-title">Пополнение баланса</h5>
+                    <h5 class="modal-title">Варианты подписки</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -229,7 +228,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" onclick="processPayment(); hidePaymentModal();">Оплатить</button>
+                    <button type="button" class="btn btn-primary" onclick="processSubscribe(); hidePaymentModal();">Оплатить</button>
                 </div>
             </div>
         </div>
@@ -330,7 +329,7 @@
     }
 }?>
         window.auth_token = '<?=$auth_token;?>';
-        var VK_APP_ID = <?=VK_APP_ID?>;
+        var APP_ID = <?=APP_ID[$_SESSION['SITE']]?>;
         var APP_NAME = '<?=APP_NAME?>';
         var SUPPORT_EMAIL = '<?=SUPPORT_EMAIL?>';
         var ISDEV = <?=DEV ? 'true' : 'false'?>;

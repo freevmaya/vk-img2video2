@@ -157,7 +157,6 @@ class WebSocketClient {
         if (typeof app !== 'undefined') {
             let task = data.message;
             app.updateTaskStatus(task.task_id, data.status === 'download_failed' ? 'failure' : task.status);
-            app.updateBalance(data.balance);
 
             if (data.status === 'download_failed') {
                 this.showNotification('Ошибка загрузки видео', 'error');
@@ -191,21 +190,9 @@ class WebSocketClient {
         this.on('notification', (data) => {
         });
         
-        // Обработчик обновления баланса
-        this.on('balance_update', (data) => {
-            if (typeof app !== 'undefined') {
-                app.updateBalance(data.balance);
-                this.showNotification(`Баланс обновлен: ${data.balance} ₽`, 'success');
-            }
-        });
-        
         // Обработчик системных уведомлений
         this.on('system_notification', (data) => {
             this.showNotification(data.message, data.type || 'info');
-        });
-
-        this.on('auth_success', (data) => {
-            app.updateBalance(data.balance);
         });
     }
 

@@ -22,22 +22,27 @@ if (!isMainApp()) {
     exit;
 }
 
-if ($sn_user_id = isset($_GET['vk_ok_user_id']) ? $_GET['vk_ok_user_id'] : false)
+session_start();
+
+if ($sn_user_id = isset($_GET['vk_ok_user_id']) ? $_GET['vk_ok_user_id'] : false) {
     define('USERINDEX', 'vk_ok_user_id');
-else if ($sn_user_id = isset($_GET['vk_user_id']) ? $_GET['vk_user_id'] : false) 
+    $_SESSION['SITE'] = 'ok';
+}
+else if ($sn_user_id = isset($_GET['vk_user_id']) ? $_GET['vk_user_id'] : false) {
     define('USERINDEX', 'vk_user_id');
+    $_SESSION['SITE'] = 'vk';
+}
 else {
     if (DEV) {
         define('USERINDEX', 'vk_user_id');
-        $sn_user_id = ADMIN_USERID_VK;
+        $_SESSION['SITE'] = 'vk';
+        $sn_user_id = SITE_ADMIN_USERID['vk'];
     } else {
         http_response_code(403);
         include('templates/vk-only.php'); // Создайте этот шаблон
         exit;
     }
 }
-
-session_start();
 //if (!$sn_user_id) $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : false;
 
 $_SESSION['USERINDEX'] = USERINDEX;

@@ -25,7 +25,7 @@ class Image2VideoApp {
         // Загрузка задач
         // this.loadTasks();
 
-        this.initPaymentDialog();
+        this.initSubscribesDialog();
         this.agreementModal = null;
         this.agreementContent = null;
     }
@@ -41,7 +41,6 @@ class Image2VideoApp {
             if (data.authenticated && data.user) {
                 localStorage.setItem('user_id', data.user.id);
                 this.updateUserInterface(data.user);
-                this.updateBalance(data.balance);
             }
             //webSocketClient.send({ type: 'check_auth', auth_token: window.auth_token });
         } catch (error) {
@@ -190,65 +189,66 @@ class Image2VideoApp {
         return this.getFormData($('#settingsSection').find('.control'));
     }
 
-    // Генерация видео
-    async generateVideo() {
-        if (!this.selectedImage) {
-            this.showNotification('Выберите хотя бы одно изображение', 'error');
-            return;
-        }
-
-        // Проверка баланса
-        const price = parseInt($('#priceDisplay').text());
-        const balance = parseFloat($('.balance-amount').text());
-        
-        if (balance < price) {
-            this.showPaymentModal();
-            this.showNotification('Недостаточно средств на балансе', 'error');
-            return;
-        }
+    async continueGenerateVideo() {
 
         try {
             // Показываем индикатор загрузки
             this.showLoading(true);
 
             let a_settings = this.getSettings();
-            if (a_settings.prompt) {
             
-                // Подготавливаем данные
-                const taskData = {
-                    image: this.selectedImage,
-                    settings: a_settings,
-                    price: price
-                };
+            // Подготавливаем данные
+            const taskData = {
+                image: this.selectedImage,
+                settings: a_settings
+            };
 
-                // Отправляем запрос на сервер
-                const result = await handlerCall({
-                    action: 'create_task',
-                    task: taskData
-                });
+            // Отправляем запрос на сервер
+            const result = await handlerCall({
+                action: 'create_task',
+                task: taskData
+            });
+            
+            if (result.success) {
+                this.currentTask = result.hash;
+                this.tasks.push(result.hash);
                 
-                if (result.success) {
-                    this.currentTask = result.hash;
-                    this.tasks.push(result.hash);
-                    
-                    this.showNotification('Задание на генерацию создано!', 'success');
-                    this.addTaskToList(result.hash);
+                this.showNotification('Задание на генерацию создано!', 'success');
+                this.addTaskToList(result.hash);
 
-                    vkBridgeHandler.updateNotificationsAllowed();
-                    
-                    // Обновляем баланс
-                    this.updateBalance(balance - price);
-                    $('#settingsSection').hide();
-                } else {
-                    throw new Error(result.message || 'Ошибка создания задания');
-                }
-            } else this.showNotification('Отсутствует промпт для задачи');
+                vkBridgeHandler.updateNotificationsAllowed();
+                $('#settingsSection').hide();
+            } else {
+                throw new Error(result.message || 'Ошибка создания задания');
+            }
         } catch (error) {
             console.error('Generation error:', error);
             this.showNotification(error.message, 'error');
         } finally {
             this.showLoading(false);
         }
+    }
+
+    // Генерация видео
+    async generateVideo(price=0) {
+        if (!this.selectedImage) {
+            this.showNotification('Выберите хотя бы одно изображение', 'error');
+            return;
+        }
+
+        let a_settings = this.getSettings();
+        if (!a_settings.prompt) {
+            this.showNotification('Отсутствует промпт для задачи');
+            return;
+        }
+
+        if (price)
+            vkBridgeHandler.VKWebAppShowOrderBox()
+                .then((result)=>{
+                    if (result)
+                        this.continueGenerateVideo();
+                });
+        else this.continueGenerateVideo();
     }
 
     // Добавление задачи в список
@@ -481,74 +481,36 @@ class Image2VideoApp {
         activeTasks.forEach(task => this.addTaskToList(task));
     }
 
-    // Обновление баланса
-    updateBalance(newBalance = false) {
-        if (isNumeric(newBalance))
-            $('.balance-amount').text(`${newBalance} ₽`);
-        else {
-            handlerCall({action: 'get_balance'})
-                .then((result)=>{
-                    if (isNumeric(result.balance))
-                        $('.balance-amount').text(`${result.balance} ₽`);
-                });
-        }
-    }
-
-    // Показ модального окна оплаты
-    showPaymentModal() {
+    showSubscribesModal() {
         let view = $('#paymentModal');
         this.paymentModal  = new bootstrap.Modal(view[0]);
         this.paymentModal.show();
     }
 
-    hidePaymentModal() {
+    hideSubscribesModal() {
         this.paymentModal.hide();
     }
 
     // Обработка платежа
-    async processPayment() {
+    async processSubscribe() {
         let active = $('.payment-option.active');
         if (active.length > 0) {
             let price = active.data('price');
             let id = active.data('id');
 
             if (ISDEV) {
-                let result = await handlerCall({action: 'update_balance', amount: price});
+                let result = await handlerCall({action: 'update_subscribe', id: id});
                 if (result.success)
-                    this.updateBalance(result.balance);
+                    this.updateSubscribe(id);
             } else {
                 try {
-                    if (vkBridgeHandler.isInVK()) {
-                        const success = await vkBridgeHandler.initPayment(
-                            id, price, 'Пополнение баланса'
-                        );
-                        
-                        if (success) {
-                            await this.updateUserBalance();
-                            this.showNotification('Баланс успешно пополнен!', 'success');
-                        }
-                    } else {
-                        // Реализация для веб1-версии
-                        this.showNotification('Оплата в веб-версии временно недоступна', 'warning');
-                    }
+                    if (vkBridgeHandler.isInVK())
+                        await vkBridgeHandler.initPayment(id);
                 } catch (error) {
                     console.error('Payment processing error:', error);
                     this.showNotification('Ошибка при обработке платежа', 'error');
                 }
             }
-        }
-    }
-
-    // Обновление баланса пользователя
-    async updateUserBalance() {
-        try {
-            const result = handlerCall({action:'update_balance'});
-            
-            if (result.success)
-                this.updateBalance(result.balance);
-
-        } catch (error) {
-            console.error('Balance update error:', error);
         }
     }
 
@@ -582,7 +544,7 @@ class Image2VideoApp {
 
     // Обновление интерфейса пользователя
     updateUserInterface(user) {
-        this.updateBalance(user.balance);
+        this.updateSubscribe(user);
     }
 
     // Выход из системы
@@ -596,7 +558,7 @@ class Image2VideoApp {
         }
     }
 
-    initPaymentDialog() {
+    initSubscribesDialog() {
         let container = $('#payment-block');
         let selected;
 
@@ -936,32 +898,8 @@ function openFileUpload() {
     $('#fileInput').click();
 }
 
-function showPaymentModal() {
-    if (app) app.showPaymentModal();
-}
-
-function hidePaymentModal() {
-    if (app) app.hidePaymentModal();
-}
-
-function processPayment() {
-    if (app) app.processPayment();
-}
-
-function generateVideo() {
-    if (app) app.generateVideo();
-}
-
 function logout() {
     if (app) app.logout();
-}
-
-function showProfile() {
-    if (app) app.showNotification('Раздел профиля в разработке', 'info');
-}
-
-function showHistory() {
-    if (app) app.showNotification('Раздел истории в разработке', 'info');
 }
 
 function debounce(func, wait) {
