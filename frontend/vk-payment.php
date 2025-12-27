@@ -143,6 +143,12 @@ class PaymentProcess {
                 case 'order_status_change_test': 
                     $result = $this->order_status_change($data);
                     break;
+                case 'get_subscription': 
+                    $result = $this->get_subscription($data);
+                    break;
+                case 'get_subscription_test': 
+                    $result = $this->get_subscription($data);
+                    break;
                 default: 
                     http_response_code(500);
                     logPayment('Неизвестный "notification_type". Parsed data: '.$json_data, true);
@@ -203,6 +209,33 @@ class PaymentProcess {
             ];
 
         return get_error_response("Товара не существует");
+    }
+
+    function get_subscription($data) {
+        $sub_id = explode("-", $data['item'])[1];
+
+        try {
+            if ($subOptions = (new SubscribeOptions())->getItem($sub_id)) {
+                return [
+                    "response" => [
+                        'price'=>$subOptions['price'],
+                        'period'=>$subOptions['period'],
+                        'trial_duration'=>$subOptions['trial_duration'],
+                        'expiration'=>3600
+                    ]
+                ];
+            }
+        } catch(Exception $e) {
+            trace_error($e);
+        }
+
+        return [
+                "error" => [
+                    'error_code'=>1,
+                    'error_msg'=>"Ошибка обновления информации на сервере. Попробуйте ещё раз позже.",
+                    "critical" => true
+                ]
+            ];
     }
 
     /**
@@ -511,7 +544,7 @@ function main() {
     $payObject = new PaymentProcess();
     
     // Тестовый endpoint
-    $payObject->testPaymentEndpoint();
+    //$payObject->testPaymentEndpoint();
     
     // Обработка реальных уведомлений
     echo $payObject->handlePaymentNotification(file_get_contents('php://input'), getallheaders());

@@ -62,6 +62,14 @@ class SubscribeOptions extends BaseModel {
 			'default' => [
 				'label'=> 'default limit',
 				'dbtype' => 'i'
+			],
+			'period' => [
+				'label'=> 'period',
+				'dbtype' => 'i'
+			],
+			'trial_duration' => [
+				'label'=> 'trial_duration',
+				'dbtype' => 'i'
 			]
 		];
 	}
