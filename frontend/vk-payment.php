@@ -272,11 +272,11 @@ class PaymentProcess {
 
                 if ($sitem = $model->getItem($data['subscription_id'], 'vk_subscription_id')) {
                     if (!$model->Update([
-                            'subscription_id' => $data['subscription_id'],
+                            'vk_subscription_id' => $data['subscription_id'],
                             'cancel_reason' => isset($data['cancel_reason']) ? $data['cancel_reason'] : '',
                             'expired' => $expired,
                             'status' => $data['status']
-                        ], 'subscription_id')) {
+                        ], 'vk_subscription_id')) {
                         return $errorMsg;
                     }
                 } else {
