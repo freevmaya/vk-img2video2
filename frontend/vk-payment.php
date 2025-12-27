@@ -137,24 +137,28 @@ class PaymentProcess {
                 case 'get_item_test': 
                     $result = $this->get_item($data);
                     break;
+
                 case 'order_status_change': 
                     $result = $this->order_status_change($data);
                     break;
                 case 'order_status_change_test': 
                     $result = $this->order_status_change($data);
                     break;
+
                 case 'get_subscription': 
                     $result = $this->get_subscription($data);
                     break;
                 case 'get_subscription_test': 
                     $result = $this->get_subscription($data);
                     break;
-                case 'subscription_status_change': 
+
+                case 'subscription_status_change':
                     $result = $this->subscription_status_change($data);
                     break;
-                case 'subscription_status_change_test': 
+                case 'subscription_status_change_test':
                     $result = $this->subscription_status_change($data);
                     break;
+
                 default: 
                     http_response_code(500);
                     logPayment('Неизвестный "notification_type". Parsed data: '.$json_data, true);
