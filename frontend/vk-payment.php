@@ -273,7 +273,7 @@ class PaymentProcess {
                     if (!$model->Update([
                             'subscription_id' => $data['subscription_id'],
                             'cancel_reason' => isset($data['cancel_reason']) ? $data['cancel_reason'] : '',
-                            'expired' => $data['pending_cancel'] == 1 ? $expired : null,
+                            'expired' => $expired,
                             'status' => $data['status']
                         ], 'subscription_id')) {
                         return $errorMsg;
@@ -286,6 +286,8 @@ class PaymentProcess {
                         'created_at' => date('Y-m-d H:i:s'),
                         'status' => $data['status']
                     ]);
+
+                    $sitem = $model->getItem($order_id);
                 }
 
                 if ($user = (new VKUserModel())->getItem($data['user_id'], USERINDEX)) {
@@ -294,7 +296,7 @@ class PaymentProcess {
                         'user_id' => $user['id'],
                         'type' => 'subscription',
                         'title' => $data['status'],
-                        'message' => json_encode($data, JSON_FLAGS)
+                        'message' => json_encode($sitem, JSON_FLAGS)
                     ]);
 
                     return [
