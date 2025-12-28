@@ -263,7 +263,7 @@ class Image2VideoApp {
 
         if (ISDEV || (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0)))
             this.continueGenerateVideo();
-        else if (vkBridgeHandler.bridge) {
+        else if (vkBridgeHandler.isInVK()) {
 
             vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
                     type: 'item', // Всегда должно быть 'item'
@@ -281,16 +281,6 @@ class Image2VideoApp {
                 });
 
         } else vkBridgeHandler.showNotification('Оплата доступна только в приложении', 'warning');
-
-        /*
-            vkBridgeHandler.initPayment()
-                .then((result)=>{
-                    if (result)
-                        this.continueGenerateVideo();
-                })
-                .catch((error)=>{
-                    console.error(error);
-                });*/
     }
 
     // Добавление задачи в список

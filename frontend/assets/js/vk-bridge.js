@@ -418,22 +418,6 @@ class VKBridgeHandler {
         });
     }
 
-    // Инициализация платежей
-    async initPayment(product_id) {
-        if (!this.bridge) {
-            this.showNotification('Оплата доступна только в приложении VK', 'warning');
-            return false;
-        }
-
-        try {
-            return this.VKWebAppShowOrderBox(product_id);            
-        } catch (error) {
-            console.error('Payment error:', error);
-            this.showNotification('Ошибка при оплате', 'error');
-            return false;
-        }
-    }
-
     // Проверка, запущено ли в VK
     isInVK() {
         return this.bridge !== null && this.isInitialized;
