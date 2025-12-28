@@ -112,7 +112,7 @@ class VKBridgeHandler {
                 WebSocketClient.Initialize();
 
 
-                webSocketClient.on('notification', this.onNotification.bind(this));
+                //webSocketClient.on('notification', this.onNotification.bind(this));
 
                 app.loadTasks();
             }
@@ -338,6 +338,7 @@ class VKBridgeHandler {
         }
     }
 
+    /*
     onNotification(data) {
         if (data.notify.type == 'payment') {
             vkBridgeHandler.showNotification('Платеж успешно выполнен!', 'success');
@@ -345,7 +346,7 @@ class VKBridgeHandler {
                 this.currentPaymentResolve(data.notify);
         }
         this.currentPaymentResolve = null;
-    }
+    }*/
 
     async VKWebAppShowOrderBox(product_id = 0) {
 
@@ -356,15 +357,15 @@ class VKBridgeHandler {
         else {
 
             return new Promise((resolve, reject)=>{
-                this.currentPaymentResolve = resolve;
+
+                //this.currentPaymentResolve = resolve;
                 this.bridge.send('VKWebAppShowOrderBox', {
                     type: 'item', // Всегда должно быть 'item'
                     item: product_id ? product_id : 'one'
                 })
                 .then((data) => {
                     if (!data.success) this.showNotification('Платеж не был завершен', 'warning');
-                    else reject(data);
-                    return data.success;
+                    resolve(data.success);
                 })
                 .catch((error) => {
                     console.log(error);
