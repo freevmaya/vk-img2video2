@@ -197,7 +197,8 @@ class WebSocketClient {
                     app.updateForSubscription(JSON.parse(data.notify.message));
                     break;
                 default:
-                    console.log('Unprocessed notification: ', data);
+                    if (ISDEV)
+                        console.log('Unprocessed notification: ', data);
                     break;
             }
         });
