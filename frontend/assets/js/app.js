@@ -243,7 +243,7 @@ class Image2VideoApp {
 
         webSocketClient.on('notification', waitPayment);
         setTimeout(()=>{
-            this.showNotification('Ошибка при оплате', 'error');
+            this.showNotification('Проблемы при оплате', 'warning');
             webSocketClient.off('notification', waitPayment);
         }, waitSec * 1000);
     }
