@@ -55,7 +55,7 @@
                 <div class="user-section" id="userSection">
                     <div class="d-flex align-items-center">
                         <div class="user-subscribe">
-                            <button class="btn btn-sm btn-outline-primary ms-2" onclick="app.showSubscribesModal()">
+                            <button id="subscription-btn" class="btn btn-sm btn-outline-primary ms-2" onclick="app.clickSubscriptionBtn()">
                                 <i class="bi bi-box"> Подписка</i>
                             </button>
                         </div>
@@ -159,12 +159,12 @@
                         </div>
                     </div>
                     
-                    <div class="price-display text-center">
-                        <div>Стоимость: <span class="text-primary" id="priceDisplay"><?=strEnum(50, CURRENCY_PATTERN[$_SESSION['SITE']])?></span></div>
+                    <div class="price-display text-center" id="priceBlock">
+                        <div>Стоимость: <span class="text-primary" id="priceDisplay"><?=strEnum(SITE_PRICE[$_SESSION['SITE']], CURRENCY_PATTERN[$_SESSION['SITE']])?></span></div>
                         <small class="text-muted">Списание произойдет после генерации</small>
                     </div>
                     <div class="mt-3 footer">
-                        <button class="btn btn-primary me-2" onclick="app.generateVideo(<?=SITE_PRICE[$_SESSION['SITE']]?>)" id="generateBtn">
+                        <button class="btn btn-primary me-2" onclick="app.generateVideo()" id="generateBtn">
                             <i class="bi bi-magic me-2"></i>Создать видео
                         </button>
                     </div>
@@ -319,6 +319,53 @@
         </div>
     </div>
 
+    <!-- Модальное окно подписки -->
+    <div class="modal fade" id="modalViewSubscription" tabindex="-1" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-top">
+            <div class="modal-content glass-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-file-text me-2"></i><span>Ваша подписка</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="closeModal(this)"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-5">
+                        <h3 class="gradient-text"><i class="bi bi-1-circle me-2"></i>Оживи фото</h3>
+                        <p class="text-muted">Информация о подписке</p>
+                        <hr class="my-4">
+                    </div>
+                    <section class="privacy-section agreement-section mb-4 fade-in" style="animation-delay: 0s;">
+                        <h3 class="h4 mb-3"><i class="bi bi-2-circle me-2"></i>Срок действия</h3>
+                        <ul class="list-unstyled small">
+                            <li class="expired"></li>
+                        </ul>
+                        <h3 class="h4 mb-3"><i class="bi bi-2-circle me-2"></i>Состояние</h3>
+                        <p>
+                            <ul class="list-unstyled small">
+                                <li class="status"></li>
+                                <li class="used"></li>
+                            </ul>
+                            <div class="buttons">
+                                <button type="button" class="btn btn-secondary" onclick="app.subscription.ResumeSubscription(); closeModal(this);">
+                                    <i class="bi bi-x-circle me-1"></i>Продлить
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="app.subscription.ChangeSubscription(); closeModal(this);">
+                                    <i class="bi bi-x-circle me-1"></i>Изменить
+                                </button>
+                            </div>
+                        </p>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal(this)">
+                        <i class="bi bi-x-circle me-1"></i>Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Загрузка скриптов -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/vk-bridge.js?v=<?=$updateVer?>"></script>
@@ -343,6 +390,11 @@
         var SUPPORT_EMAIL = '<?=SUPPORT_EMAIL?>';
         var ISDEV = <?=DEV ? 'true' : 'false'?>;
         var SOCKET_ADDRESS = '<?=SOCKET_ADDRESS?>';
+        var CURRENCY_PATTERN = '<?=CURRENCY_PATTERN[$_SESSION['SITE']]?>';
+        var SITE_PRICE = <?=SITE_PRICE[$_SESSION['SITE']]?>;
+
+        <?$subsciption = (new VKSubscriptionModel())->get($_SESSION['user_id']);?>
+        window.SUBSCRIPTION = <?=$subsciption ? json_encode($subsciption) : 'null'?>;
 
         <?if (!DEV) {?>
         $(document).ready(function() {

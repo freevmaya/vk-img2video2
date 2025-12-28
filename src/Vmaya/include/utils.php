@@ -13,6 +13,11 @@ function is_value($str) {
     return false;
 }
 
+function isNullOrUndefined($value) {
+    return is_null($value) || !isset($value) || 
+            (is_string($value) && (($value == 'null') || ($value == 'undefined')));
+}
+
 function toUTF($text) {
     return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
         return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');

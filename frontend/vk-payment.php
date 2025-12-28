@@ -65,6 +65,10 @@ function verifyVKSignature($data) {
 function logPayment($message, $isError = false) {
     $logFile = $isError ? PAYMENT_ERROR_LOG_FILE : PAYMENT_LOG_FILE;
     $timestamp = date('Y-m-d H:i:s');
+
+    if (!is_string($message))
+        $message = json_encode($message, JSON_FLAGS);
+
     $logMessage = "[{$timestamp}] {$message}\n";
     
     if (ISLOG) {
@@ -270,15 +274,20 @@ class PaymentProcess {
                 $model = new VKSubscriptionModel();
                 $expired = date('Y-m-d H:i:s', strtotime("+{$sdays} day"));
                 $pending_cancel = isset($data['pending_cancel']) && ($data['pending_cancel'] == 1);
+                $next_bill_time = isset($data['next_bill_time']) ? date('Y-m-d H:i:s', $data['next_bill_time']) : null;
 
                 if ($sitem = $model->getItem($data['subscription_id'], 'vk_subscription_id')) {
-                    if (!$model->Update([
-                            'vk_subscription_id' => $data['subscription_id'],
-                            'status' => $data['status'],
-                            'cancel_reason' => isset($data['cancel_reason']) ? $data['cancel_reason'] : '',
-                            'expired' => $expired
-                        ], 'vk_subscription_id')) {
-                        return $errorMsg;
+                    //logPayment($sitem['status'].' '.$data['status']);
+                    if ($sitem['status'] != $data['status']) {
+                        if (!$model->Update([
+                                'expired' => $expired,
+                                'vk_subscription_id' => $data['subscription_id'],
+                                'status' => $data['status'],
+                                'cancel_reason' => isset($data['cancel_reason']) ? $data['cancel_reason'] : '',
+                                'next_bill_time' => $next_bill_time
+                            ], 'vk_subscription_id')) {
+                            return $errorMsg;
+                        }
                     }
                     $order_id = $sitem['id'];
                 } else {
@@ -291,15 +300,13 @@ class PaymentProcess {
                         'status'        => $data['status'],
                         'expired'       => $expired
                     ]);
-
-                    $sitem = $model->getItem($order_id);
                 }
 
                 (new NotificationsModel())->Update([
                     'user_id' => $user['id'],
                     'type' => 'subscription',
                     'title' => $data['status'],
-                    'message' => json_encode($sitem, JSON_FLAGS)
+                    'message' => json_encode($model->get($order_id, 'id'), JSON_FLAGS)
                 ]);
 
                 return [

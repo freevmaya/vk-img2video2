@@ -19,7 +19,6 @@ abstract class BaseModel {
 
 	public function Update($values, $idField = 'id') {
 		GLOBAL $dbp;
-		$types = $this->dbTypes(array_keys($values), $idField);
 
 		$id = isset($values[$idField]) ? $values[$idField] : null;
 
@@ -27,10 +26,9 @@ abstract class BaseModel {
 
 		if ($item = $this->getItem($id, $idField))
 			unset($values[$idField]);
-		else {
-			$id = false;
-			$types = $this->dbTypes(array_keys($values), null);
-		}
+		else $id = false;
+
+		$types = $this->dbTypes(array_keys($values), null);
 
 		if ($id) {
 			if ($dbp->bquery($this->updateQuery($id, $values, $idField), $types, array_values($values)))
@@ -46,7 +44,8 @@ abstract class BaseModel {
 		$fields = $this->getFields();
 		$result = [];
 		foreach ($values as $field=>$value)
-			if (isset($fields[$field]) && isset($fields[$field]['dbtype']))
+			if (isset($fields[$field]) && 
+				isset($fields[$field]['dbtype']))
 				$result[$field] = $value;
 
 		return $result;
@@ -56,10 +55,14 @@ abstract class BaseModel {
 
 		$updateList = [];
 		$id = $this->verifyId($idField, $id);
+		$fields = $this->getFields();
+		$fieldList = array_keys($values);
 
-		foreach($this->getFields() as $fieldName=>$field)
-			if (($fieldName != $idField) && isset($values[$fieldName]))
+		foreach($fieldList as $fieldName) {
+			if (isset($fields[$fieldName]) && 
+				($fieldName != $idField))
 				$updateList[] = "`{$fieldName}`=?";
+		}
 
 		return "UPDATE `{$this->getTable()}` SET ".implode(',', $updateList)." WHERE `{$idField}`={$id}";
 	}
@@ -67,8 +70,11 @@ abstract class BaseModel {
 	protected function insertQuery($values) {
 
 		$fieldList = array_keys($values);
+		$fields = $this->getFields();
 		$valuesList = [];
-		foreach($fieldList as $fieldName) $valuesList[] = '?';
+		foreach($fieldList as $fieldName) 
+			if (isset($fields[$fieldName]))
+				$valuesList[] = '?';
 
 		return "INSERT INTO {$this->getTable()} (".implode(',', $fieldList).") VALUES (".implode(',', $valuesList).")";
 	}

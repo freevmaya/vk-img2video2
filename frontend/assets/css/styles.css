@@ -541,3 +541,29 @@ video:fullscreen {
     z-index: 99999;
     background: transparent;
 }
+
+.active .status {
+    color: #00ff00;
+}
+
+.chargeable .status {
+    color: #00ff00;
+}
+
+.cancelled .status {
+    color: #ff3a3a;
+}
+
+.active .buttons,
+.chargeable .buttons {
+    display: none;
+}
+
+.cancelled .buttons {
+    display: block;
+}
+
+#subscription-btn.chargeable {
+    background-color: #0d6efd;
+    color: white;
+}

@@ -374,7 +374,7 @@ class VKBridgeHandler {
         }
     }
 
-    async VKWebAppShowSubscriptionBox(product_id = 0) {
+    async VKWebAppShowSubscriptionBox(params) {
 
         if (ISDEV) 
             return new Promise((resolve, reject)=>{
@@ -384,10 +384,7 @@ class VKBridgeHandler {
 
             return new Promise((resolve, reject)=>{
                 this.currentPaymentResolve = resolve;
-                this.bridge.send('VKWebAppShowSubscriptionBox', {
-                    action: 'create',
-                    item: 'subscription-' + product_id
-                })
+                this.bridge.send('VKWebAppShowSubscriptionBox', params)
                 .then((data) => {
                     if (!data.success) {
                        resolve(true);

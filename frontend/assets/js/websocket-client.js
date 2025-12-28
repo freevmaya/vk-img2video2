@@ -192,7 +192,14 @@ class WebSocketClient {
         });
         
         this.on('notification', (data) => {
-            console.log('Notification: ', data);
+            switch (data.notify.type) {
+                case "subscription":
+                    app.updateForSubscription(JSON.parse(data.notify.message));
+                    break;
+                default:
+                    console.log('Unprocessed notification: ', data);
+                    break;
+            }
         });
     }
 

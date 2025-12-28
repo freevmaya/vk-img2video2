@@ -90,19 +90,22 @@
 			$result = false;
 
 			try {
-				//trace($query." ".$types);
+				//trace($query.' '.json_encode($params));
 				$stmt = $this->mysqli->prepare($query);
 
 				$i=0;
 		        foreach ($params as $key => $value) {
-		            if ($this->isDateTime($value))
-		                $params[$key] = $this->formatDateTime($value);
-		            if (($types[$i] == 's') && !is_string($value))
-		            	$params[$key] = json_encode($value);
+		        	if ($types[$i] == 's') {
+			            if ($this->isDateTime($value))
+			                $params[$key] = $this->formatDateTime($value);
+			            if (is_object($value) || is_array($value))
+			            	$params[$key] = json_encode($value);
+			        }
+
 		            $i++;
 		        }
 
-		        //trace($types.' '.json_encode($params));
+		        //trace($query.' '.$types.' '.json_encode($params));
 		        if (strlen($types) == count($params)) {
 					$stmt->bind_param($types, ...$params);
 

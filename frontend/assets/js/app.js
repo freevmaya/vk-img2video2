@@ -5,8 +5,8 @@ class Image2VideoApp {
         this.selectedImage = null;
         this.currentTask = null;
         this.tasks = [];
-        this.subscribeModal = null;
         this.avgTaskTime = 0;
+        this.subscription = new Subscription();
         
         this.init();
 
@@ -156,9 +156,7 @@ class Image2VideoApp {
 
     // Обновление цены
     updatePrice() {
-        const basePrice = 50;
-        
-        $('#priceDisplay').text(`${basePrice} ₽`);
+        $('#priceDisplay').text(strEnum(SITE_PRICE, CURRENCY_PATTERN));
     }
 
     getFormData(elems) {
@@ -215,6 +213,7 @@ class Image2VideoApp {
                 
                 this.showNotification('Задание на генерацию создано!', 'success');
                 this.addTaskToList(result.hash);
+                this.subscription.addTask();
 
                 //vkBridgeHandler.updateNotificationsAllowed();
                 $('#settingsSection').hide();
@@ -230,7 +229,7 @@ class Image2VideoApp {
     }
 
     // Генерация видео
-    async generateVideo(price=0) {
+    async generateVideo() {
         if (!this.selectedImage) {
             this.showNotification('Выберите хотя бы одно изображение', 'error');
             return;
@@ -242,7 +241,7 @@ class Image2VideoApp {
             return;
         }
 
-        if (price)
+        if (this.subscription.remainedTasks() == 0)
             vkBridgeHandler.initPayment()
                 .then((result)=>{
                     if (result)
@@ -481,17 +480,20 @@ class Image2VideoApp {
         activeTasks.forEach(task => this.addTaskToList(task));
     }
 
-    showSubscribesModal() {
-        let view = $('#subscribeModal');
-        this.subscribeModal  = new bootstrap.Modal(view[0]);
-        this.subscribeModal.show();
+    clickSubscriptionBtn() {
+        if (this.subscription.data != null) 
+            this.subscription.showView();
+        else (new bootstrap.Modal($('#subscribeModal')[0])).show();
     }
 
     // Обработка выбора подписки
     async processSubscribe() {
         let active = $('.payment-option.active');
         if (active.length)
-            vkBridgeHandler.VKWebAppShowSubscriptionBox(active.data('id'));
+            vkBridgeHandler.VKWebAppShowSubscriptionBox({
+                action: 'create',
+                item: 'subscription-' + active.data('id')
+            });
     }
 
     // Показ индикатора загрузки
@@ -746,6 +748,92 @@ class Image2VideoApp {
         if (webSocketClient && !webSocketClient.isConnected)
             webSocketClient.reconnectImmediately();
     }
+
+    updateForSubscription(data) {
+        this.subscription.setData(data);
+    }
+
+    ResumeSubscription() {
+
+    }
+}
+
+class Subscription {
+
+    setData(sdata) {
+
+        if (this.data && (this.data.status != sdata.status))
+            vkBridgeHandler.showNotification('Статус подписки изменился на ' + this.getStatusAliase(sdata.status));
+        this.data = sdata;
+        sdata.video_limit = toNumber(sdata.video_limit);
+        sdata.image_limit = toNumber(sdata.image_limit);
+        sdata.task_count = toNumber(sdata.task_count);
+        this.update();
+    }
+
+    getStatusAliase(status) {
+        switch (status) {
+            case 'active':
+                return 'Активная'
+            case 'chargeable':
+                return 'Активная'
+            case 'cancelled':
+                return 'Отменено'
+        };
+        return status;
+    }
+
+    remainedTasks() {
+        return this.data ? Math.max(this.data.video_limit - this.data.task_count, 0) : 0;
+    }
+
+    active() {
+        return this.data && ((this.data.status == 'chargeable') || (this.data.status == 'active'));
+    }
+
+    update() {
+        $('#priceBlock').css('display', this.remainedTasks() > 0 ? 'none' : 'block')
+        let btn = $('#subscription-btn');
+
+        btn.find('i').text(' ' + (this.data ? this.data.video_limit + '/' + this.data.task_count : 'Подписка'));
+
+        let view = $('#modalViewSubscription');
+
+        btn.removeClass('chargeable active cancelled');
+        view.removeClass('chargeable active cancelled');
+        
+        btn.addClass(this.data.status);
+        view.addClass(this.data.status);
+
+        view.find('.expired').text(`
+            С ${this.data.created_at} по ${this.data.expired}
+        `);
+        view.find('.used').text(`Сделано: ${this.data.task_count}, осталось: ${this.remainedTasks()} видео`);
+        view.find('.status').text(this.getStatusAliase(this.data.status));
+    }
+
+    addTask() {
+        if (this.data) {
+            this.data.task_count++;
+            this.update();
+        }
+    }
+
+    showView() {
+        let view = $('#modalViewSubscription');
+        (new bootstrap.Modal(view[0])).show();
+    }
+
+    ResumeSubscription() {        
+        vkBridgeHandler.VKWebAppShowSubscriptionBox({
+            action: 'resume',
+            subscription_id: this.data.vk_subscription_id
+        });
+    }
+
+    ChangeSubscription() {
+        (new bootstrap.Modal($('#subscribeModal')[0])).show();
+    }
 }
 
 class TaskView {
@@ -935,9 +1023,11 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
 // Инициализация приложения при загрузке страницы
 let app;
+
 $(document).ready(function() {
     app = new Image2VideoApp();
     window.app = app;
+    app.updateForSubscription(window.SUBSCRIPTION);
     
     // Инициализация VK Bridge
     if (ISDEV) 
