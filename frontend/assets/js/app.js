@@ -233,17 +233,21 @@ class Image2VideoApp {
     }
 
     waitPaymentAndGenerate(waitSec = 20) {
+
         let _this = this;
+        let timer_id;
+
         function waitPayment(data) {
             if (data.notify.type == 'payment') {
                 _this.continueGenerateVideo();
                 webSocketClient.off('notification', waitPayment);
+                clearTimeout(timer_id);
             }
         }
 
         webSocketClient.on('notification', waitPayment);
-        setTimeout(()=>{
-            this.showNotification('Проблемы при оплате', 'warning');
+        timer_id = setTimeout(()=>{
+            this.showNotification('Проблемы при оплате', 'error');
             webSocketClient.off('notification', waitPayment);
         }, waitSec * 1000);
     }
