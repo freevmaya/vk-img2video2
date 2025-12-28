@@ -232,6 +232,22 @@ class Image2VideoApp {
         }
     }
 
+    waitPaymentAndGenerate(waitSec = 20) {
+        let _this = this;
+        function waitPayment(data) {
+            if (data.notify.type == 'payment') {
+                _this.continueGenerateVideo();
+                webSocketClient.off('notification', waitPayment);
+            }
+        }
+
+        webSocketClient.on('notification', waitPayment);
+        setTimeout(()=>{
+            this.showNotification('Ошибка при оплате', 'error');
+            webSocketClient.off('notification', waitPayment);
+        }, waitSec * 1000);
+    }
+
     // Генерация видео
     generateVideo() {
         if (!this.selectedImage) {
@@ -249,34 +265,22 @@ class Image2VideoApp {
             this.continueGenerateVideo();
         else if (vkBridgeHandler.bridge) {
 
-            let _this = this;
-            function waitPayment(data) {
-                if (data.notify.type == 'payment') {
-                    _this.continueGenerateVideo();
-                    webSocketClient.off('notification', waitPayment);
-                }
-            }
-
             vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
                     type: 'item', // Всегда должно быть 'item'
                     item: 'one'
                 })
                 .then((data) => {
-                    if (!data.success) 
-                        this.showNotification('Платеж не был завершен', 'warning');
-                    this.continueGenerateVideo();
+                    if (data.success) 
+                        this.continueGenerateVideo();
+                    else this.waitPaymentAndGenerate(20);
                 })
                 .catch((error) => {
                     console.error('Payment error:', error);
-
-                    webSocketClient.on('notification', waitPayment);
-                    setTimeout(()=>{
-                        this.showNotification('Ошибка при оплате', 'error');
-                        webSocketClient.off('notification', waitPayment);
-                    }, 20000); // Ждем умедомление о платеже 20 сек.
+                    // Если ошибка при платеже, ждем уведомление о платеже 20 сек.
+                    this.waitPaymentAndGenerate(20);
                 });
 
-        } else vkBridgeHandler.showNotification('Оплата доступна только в приложении VK', 'warning');
+        } else vkBridgeHandler.showNotification('Оплата доступна только в приложении', 'warning');
 
         /*
             vkBridgeHandler.initPayment()
