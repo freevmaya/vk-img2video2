@@ -319,7 +319,7 @@ function handleGetTasks() {
 
         $tasks = $dbp->asArray("SELECT t.*, DATE_ADD(t.`date`, {$timeoffset}) AS `date`, DATE_ADD(kt.completed_at, {$timeoffset}) AS completed_at FROM task t ".
             "LEFT JOIN kling_tasks kt ON kt.task_id = t.hash AND kt.status = 'succeed' ".
-            "WHERE t.user_id = {$_SESSION['user_id']} LIMIT 9");
+            "WHERE t.user_id = {$_SESSION['user_id']}");
 
         /*
         $tasks = (new TaskModel())->getItems(['user_id' => $_SESSION['user_id']]);
