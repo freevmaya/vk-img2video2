@@ -1,5 +1,5 @@
 <?
-    $updateVer = 16;
+    $updateVer = 17;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
