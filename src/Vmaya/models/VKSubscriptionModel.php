@@ -12,7 +12,7 @@ class VKSubscriptionModel extends BaseModel {
 				"SELECT s.*, so.name, so.image_limit, so.video_limit, DATE_FORMAT(s.created_at, '%d.%m.%Y %H:%i') AS created_at, DATE_FORMAT(s.expired, '%d.%m.%Y %H:%i') AS expired, ".
 				"(SELECT COUNT(t.id) FROM task t WHERE t.`user_id` = s.`user_id` AND (t.`date` BETWEEN s.`created_at` AND s.`expired`)) AS task_count ".
 				"FROM {$this->getTable()} s INNER JOIN `subscribe_options` so ON so.id = s.sub_id ".
-				"WHERE s.`{$fieldId}` = {$id} AND (NOW() BETWEEN s.`created_at` AND s.`expired`) ORDER BY `status`");
+				"WHERE s.`{$fieldId}` = {$id} AND (NOW() BETWEEN s.`created_at` AND s.`expired`) ORDER BY `id` DESC");
 	}
 
 	public function getFields() {

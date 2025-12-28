@@ -546,12 +546,16 @@ video:fullscreen {
     color: #00ff00;
 }
 
+.over .status {
+    color: green;
+}
+
 .chargeable .status {
     color: #00ff00;
 }
 
 .cancelled .status,
-.over .status {
+.over .used {
     color: #ff3a3a;
 }
 
@@ -560,8 +564,7 @@ video:fullscreen {
     display: none;
 }
 
-.cancelled .buttons,
-.over .status {
+.cancelled .buttons {
     display: block;
 }
 
