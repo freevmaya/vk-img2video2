@@ -267,9 +267,9 @@ class Image2VideoApp {
 
         if (ISDEV || (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0)))
             this.continueGenerateVideo();
-        else if (vkBridgeHandler.isInVK()) {
+        else if (typeof vkBridge !== 'undefined') {
 
-            vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
+            vkBridge.send('VKWebAppShowOrderBox', {
                     type: 'item', // Всегда должно быть 'item'
                     item: 'one'
                 })
