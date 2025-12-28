@@ -194,12 +194,14 @@ class Image2VideoApp {
             this.showLoading(true);
 
             let a_settings = this.getSettings();
+
+            let user_sub = (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0);
             
             // Подготавливаем данные
             const taskData = {
                 image: this.selectedImage,
                 settings: a_settings,
-                subscription_id: this.subscription.isActualy() ? this.subscription.data.id : 0
+                subscription_id: user_sub ? this.subscription.data.id : 0
             };
 
             // Отправляем запрос на сервер
