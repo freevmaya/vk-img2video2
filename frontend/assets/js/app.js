@@ -802,7 +802,7 @@ class Subscription {
         btn.removeClass('chargeable active cancelled');
         view.removeClass('chargeable active cancelled');
 
-        let aClass = this.remainedTasks() > 0 ? this.data.status : 'over';
+        let aClass = (this.remainedTasks() > 0) || (this.data.status == 'cancelled') ? this.data.status : 'over';
 
         btn.addClass(aClass);
         view.addClass(aClass);
