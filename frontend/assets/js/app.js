@@ -248,6 +248,13 @@ class Image2VideoApp {
         if (ISDEV || (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0)))
             this.continueGenerateVideo();
         else if (vkBridgeHandler.bridge) {
+
+            function waitPayment(data) {
+                if (data.notify.type == 'payment')
+                    this.continueGenerateVideo();
+                webSocketClient.off('notification', waitPayment);
+            }
+
             vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
                     type: 'item', // Всегда должно быть 'item'
                     item: 'one'
@@ -259,7 +266,12 @@ class Image2VideoApp {
                 })
                 .catch((error) => {
                     console.error('Payment error:', error);
-                    this.showNotification('Ошибка при оплате', 'error');
+
+                    webSocketClient.on('notification', waitPayment);
+                    setTimeout(()=>{
+                        this.showNotification('Ошибка при оплате', 'error');
+                        webSocketClient.off('notification', waitPayment);
+                    }, 20000); // Ждем умедомление о платеже 20 сек.
                 });
 
         } else vkBridgeHandler.showNotification('Оплата доступна только в приложении VK', 'warning');
