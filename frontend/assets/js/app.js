@@ -195,13 +195,13 @@ class Image2VideoApp {
 
             let a_settings = this.getSettings();
 
-            let user_sub = this.subscription.isActualy() && (this.subscription.remainedTasks() > 0);
+            let use_sub = this.subscription.isActualy() && (this.subscription.remainedTasks() > 0);
             
             // Подготавливаем данные
             const taskData = {
                 image: this.selectedImage,
                 settings: a_settings,
-                subscription_id: user_sub ? this.subscription.data.id : 0
+                subscription_id: use_sub ? this.subscription.data.id : 0
             };
 
             // Отправляем запрос на сервер
@@ -216,7 +216,8 @@ class Image2VideoApp {
                 
                 this.showNotification('Задание на генерацию создано!', 'success');
                 this.addTaskToList(result.hash);
-                this.subscription.addTask();
+                if (use_sub)
+                    this.subscription.addTask();
 
                 //vkBridgeHandler.updateNotificationsAllowed();
                 $('#settingsSection').hide();
