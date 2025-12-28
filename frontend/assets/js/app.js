@@ -249,9 +249,10 @@ class Image2VideoApp {
             this.continueGenerateVideo();
         else if (vkBridgeHandler.bridge) {
 
+            let _this = this;
             function waitPayment(data) {
                 if (data.notify.type == 'payment')
-                    this.continueGenerateVideo();
+                    _this.continueGenerateVideo();
                 webSocketClient.off('notification', waitPayment);
             }
 
