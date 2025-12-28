@@ -233,7 +233,7 @@ class Image2VideoApp {
     }
 
     // Генерация видео
-    async generateVideo() {
+    generateVideo() {
         if (!this.selectedImage) {
             this.showNotification('Выберите хотя бы одно изображение', 'error');
             return;
@@ -247,14 +247,32 @@ class Image2VideoApp {
 
         if (ISDEV || (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0)))
             this.continueGenerateVideo();
-        else vkBridgeHandler.initPayment()
+        else if (vkBridgeHandler.bridge) {
+            vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
+                    type: 'item', // Всегда должно быть 'item'
+                    item: 'one'
+                })
+                .then((data) => {
+                    if (!data.success) 
+                        this.showNotification('Платеж не был завершен', 'warning');
+                    this.continueGenerateVideo();
+                })
+                .catch((error) => {
+                    console.error('Payment error:', error);
+                    this.showNotification('Ошибка при оплате', 'error');
+                });
+
+        } else vkBridgeHandler.showNotification('Оплата доступна только в приложении VK', 'warning');
+
+        /*
+            vkBridgeHandler.initPayment()
                 .then((result)=>{
                     if (result)
                         this.continueGenerateVideo();
                 })
                 .catch((error)=>{
                     console.error(error);
-                });
+                });*/
     }
 
     // Добавление задачи в список

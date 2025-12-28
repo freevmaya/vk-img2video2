@@ -368,7 +368,6 @@ class VKBridgeHandler {
                     resolve(data.success);
                 })
                 .catch((error) => {
-                    console.log(error);
                     reject(error);
                 });
             });
