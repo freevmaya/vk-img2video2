@@ -550,7 +550,8 @@ video:fullscreen {
     color: #00ff00;
 }
 
-.cancelled .status {
+.cancelled .status,
+.over .status {
     color: #ff3a3a;
 }
 
@@ -559,7 +560,8 @@ video:fullscreen {
     display: none;
 }
 
-.cancelled .buttons {
+.cancelled .buttons,
+.over .status {
     display: block;
 }
 

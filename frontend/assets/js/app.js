@@ -801,9 +801,11 @@ class Subscription {
 
         btn.removeClass('chargeable active cancelled');
         view.removeClass('chargeable active cancelled');
-        
-        btn.addClass(this.data.status);
-        view.addClass(this.data.status);
+
+        let aClass = this.remainedTasks() > 0 ? this.data.status : 'over';
+
+        btn.addClass(aClass);
+        view.addClass(aClass);
 
         view.find('.expired').text(`
             С ${this.data.created_at} по ${this.data.expired}
