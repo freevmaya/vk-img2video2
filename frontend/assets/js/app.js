@@ -251,6 +251,9 @@ class Image2VideoApp {
                 .then((result)=>{
                     if (result)
                         this.continueGenerateVideo();
+                })
+                .catch((error)=>{
+                    console.error(error);
                 });
     }
 
@@ -767,7 +770,8 @@ class Subscription {
     setData(sdata) {
 
         if (this.data && (this.data.status != sdata.status))
-            vkBridgeHandler.showNotification('Статус подписки изменился на ' + this.getStatusAliase(sdata.status));
+            vkBridgeHandler.showNotification('Статус подписки изменился на ' + this.getStatusAliase(sdata.status));        
+
         if (this.data = sdata) {
             sdata.video_limit = toNumber(sdata.video_limit);
             sdata.image_limit = toNumber(sdata.image_limit);
