@@ -1,6 +1,8 @@
 <?
 
 abstract class BaseModel {
+
+	protected $lastID;
 	abstract protected function getTable();
 	public function getFields() {return [];}
 	public function checkUnique($data) { return false; }
@@ -31,13 +33,18 @@ abstract class BaseModel {
 		$types = $this->dbTypes(array_keys($values), null);
 
 		if ($id) {
+			$this->lastID = null;
 			if ($dbp->bquery($this->updateQuery($id, $values, $idField), $types, array_values($values)))
 				return $id;
 		}
 		else if ($dbp->bquery($this->insertQuery($values), $types, array_values($values)))
-				return $dbp->lastID();
+				return $this->lastID = $dbp->lastID();
 
 		return false;
+	}
+
+	public function getLastId() {
+		return $this->lastID;
 	}
 
 	protected function allowUpdateValues($values) {

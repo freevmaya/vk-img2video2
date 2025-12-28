@@ -198,7 +198,8 @@ class Image2VideoApp {
             // Подготавливаем данные
             const taskData = {
                 image: this.selectedImage,
-                settings: a_settings
+                settings: a_settings,
+                subscription_id: this.subscription.isActualy() ? this.subscription.data.id : 0
             };
 
             // Отправляем запрос на сервер
@@ -241,13 +242,13 @@ class Image2VideoApp {
             return;
         }
 
-        if (this.subscription.remainedTasks() == 0)
-            vkBridgeHandler.initPayment()
+        if (ISDEV || (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0)))
+            this.continueGenerateVideo();
+        else vkBridgeHandler.initPayment()
                 .then((result)=>{
                     if (result)
                         this.continueGenerateVideo();
                 });
-        else this.continueGenerateVideo();
     }
 
     // Добавление задачи в список
@@ -481,7 +482,7 @@ class Image2VideoApp {
     }
 
     clickSubscriptionBtn() {
-        if (this.subscription.data != null) 
+        if (this.subscription.isActualy()) 
             this.subscription.showView();
         else (new bootstrap.Modal($('#subscribeModal')[0])).show();
     }
@@ -764,10 +765,11 @@ class Subscription {
 
         if (this.data && (this.data.status != sdata.status))
             vkBridgeHandler.showNotification('Статус подписки изменился на ' + this.getStatusAliase(sdata.status));
-        this.data = sdata;
-        sdata.video_limit = toNumber(sdata.video_limit);
-        sdata.image_limit = toNumber(sdata.image_limit);
-        sdata.task_count = toNumber(sdata.task_count);
+        if (this.data = sdata) {
+            sdata.video_limit = toNumber(sdata.video_limit);
+            sdata.image_limit = toNumber(sdata.image_limit);
+            sdata.task_count = toNumber(sdata.task_count);
+        }
         this.update();
     }
 
@@ -787,7 +789,7 @@ class Subscription {
         return this.data ? Math.max(this.data.video_limit - this.data.task_count, 0) : 0;
     }
 
-    active() {
+    isActualy() {
         return this.data && ((this.data.status == 'chargeable') || (this.data.status == 'active'));
     }
 
@@ -795,23 +797,26 @@ class Subscription {
         $('#priceBlock').css('display', this.remainedTasks() > 0 ? 'none' : 'block')
         let btn = $('#subscription-btn');
 
-        btn.find('i').text(' ' + (this.data ? this.data.video_limit + '/' + this.data.task_count : 'Подписка'));
+        btn.find('i').text(' ' + (this.isActualy() ? this.data.video_limit + '/' + this.data.task_count : 'Подписка'));
 
         let view = $('#modalViewSubscription');
 
-        btn.removeClass('chargeable active cancelled');
-        view.removeClass('chargeable active cancelled');
+        btn.removeClass('active over');
+        view.removeClass('active over');
 
-        let aClass = (this.remainedTasks() > 0) || (this.data.status == 'cancelled') ? this.data.status : 'over';
+        let aClass = this.remainedTasks() > 0 ? 'active' : 'over';
 
         btn.addClass(aClass);
         view.addClass(aClass);
 
-        view.find('.expired').text(`
-            С ${this.data.created_at} по ${this.data.expired}
-        `);
-        view.find('.used').text(`Сделано: ${this.data.task_count}, осталось: ${this.remainedTasks()} видео`);
-        view.find('.status').text(this.getStatusAliase(this.data.status));
+        if (this.data) {
+
+            view.find('.expired').text(`
+                С ${this.data.created_at} по ${this.data.expired}
+            `);
+            view.find('.used').text(`Сделано: ${this.data.task_count}, осталось: ${this.remainedTasks()} видео`);
+            view.find('.status').text(this.getStatusAliase(this.data.status));
+        }
     }
 
     addTask() {

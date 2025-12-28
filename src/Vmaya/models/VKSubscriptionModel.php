@@ -5,14 +5,43 @@ class VKSubscriptionModel extends BaseModel {
 		return 'vk_subscription';
 	}
 
-	public function get($id, $fieldId = 'user_id') {
+	public function get($id, $fieldId = 'user_id', $onlyActive = false) {
 		GLOBAL $dbp;
+
+		$where = "s.`{$fieldId}` = {$id}";
+
+		if ($onlyActive) 
+			$where .= " AND (s.`status` = 'active' || (s.`status` = 'chargeable' AND (NOW() BETWEEN s.created_at AND s.expired)))";
 
 		return $dbp->line(
 				"SELECT s.*, so.name, so.image_limit, so.video_limit, DATE_FORMAT(s.created_at, '%d.%m.%Y %H:%i') AS created_at, DATE_FORMAT(s.expired, '%d.%m.%Y %H:%i') AS expired, ".
-				"(SELECT COUNT(t.id) FROM task t WHERE t.`user_id` = s.`user_id` AND (t.`date` BETWEEN s.`created_at` AND s.`expired`)) AS task_count ".
+				"(SELECT COUNT(t.id) FROM task t WHERE t.`subscription_id` = s.`id`) AS task_count, ".
+				" (NOW() > s.`expired`) AS isExpired ".
 				"FROM {$this->getTable()} s INNER JOIN `subscribe_options` so ON so.id = s.sub_id ".
-				"WHERE s.`{$fieldId}` = {$id} AND (NOW() BETWEEN s.`created_at` AND s.`expired`) ORDER BY `id` DESC");
+				"WHERE {$where} ORDER BY `id` DESC");
+	}
+
+	public function Prolong($item) {
+
+		if ($item && (intval($item['isExpired']) == 1)) {
+			$so = (new SubscribeOptions())->getItem($item['sub_id']);
+			$newExpiried = date('Y-m-d H:i:s', strtotime($item['expired']." +{$so['period']} days"));
+
+			$this->Update([
+				'id' => $item['id'],
+				'status' => 'expired'
+			]);
+
+			unset($item['id']);
+
+			$item['created_at'] = date('Y-m-d H:i:s', strtotime($item['expired']));
+			$item['expired'] = $newExpiried;
+
+			$new_id = $this->Update($item);
+
+			return $this->get($new_id, 'id');
+		}
+		return false;
 	}
 
 	public function getFields() {

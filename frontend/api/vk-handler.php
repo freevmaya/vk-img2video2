@@ -263,8 +263,18 @@ function handleCreateTask($taskData) {
             return ['success' => false, 'message' => 'Не удалось сохранить изображения'];
         }
 
-        $api = new KlingApi(KL_ACCESS_KEY, KL_SECRET_KEY, new TaskModel());
+        $taskModel = new TaskModel();
+        $api = new KlingApi(KL_ACCESS_KEY, KL_SECRET_KEY, $taskModel);
         $response = $api->generateVideoFromImage($imageURL, generatePrompt($taskData['settings']));
+
+        $subscription_id = intval($taskData['subscription_id']);
+        if ($subscription_id > 0) {
+
+            $taskModel->Update([
+                'id' => $taskModel->getLastId(),
+                'subscription_id' => $subscription_id
+            ]);
+        }
         
         if (!isset($response['data']['task_id']) || !$response['data']['task_id'])            
             return ['success' => false, 'message' => 'Ошибка создания задачи в Kling API'];

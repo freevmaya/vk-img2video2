@@ -347,9 +347,6 @@
                                 <li class="used"></li>
                             </ul>
                             <div class="buttons">
-                                <button type="button" class="btn btn-secondary" onclick="app.subscription.ResumeSubscription(); closeModal(this);">
-                                    <i class="bi bi-x-circle me-1"></i>Продлить
-                                </button>
                                 <button type="button" class="btn btn-secondary" onclick="app.subscription.ChangeSubscription(); closeModal(this);">
                                     <i class="bi bi-x-circle me-1"></i>Изменить
                                 </button>
@@ -393,7 +390,13 @@
         var CURRENCY_PATTERN = '<?=CURRENCY_PATTERN[$_SESSION['SITE']]?>';
         var SITE_PRICE = <?=SITE_PRICE[$_SESSION['SITE']]?>;
 
-        <?$subsciption = (new VKSubscriptionModel())->get($_SESSION['user_id']);?>
+        <?
+            $sModel = (new VKSubscriptionModel());
+            $subsciption = $sModel->get($_SESSION['user_id'], 'user_id', true);
+
+            if ($subsciption && intval($subsciption['isExpired']) == 1) 
+                $subsciption = $sModel->Prolong($subsciption);
+        ?>
         window.SUBSCRIPTION = <?=$subsciption ? json_encode($subsciption) : 'null'?>;
 
         <?if (!DEV) {?>
