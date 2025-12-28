@@ -195,7 +195,7 @@ class Image2VideoApp {
 
             let a_settings = this.getSettings();
 
-            let user_sub = (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0);
+            let user_sub = this.subscription.isActualy() && (this.subscription.remainedTasks() > 0);
             
             // Подготавливаем данные
             const taskData = {
