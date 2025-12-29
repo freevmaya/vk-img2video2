@@ -94,7 +94,7 @@
                                 <p class="text-muted">Загрузите фото с вашего устройства</p>
                             </div>
                         </div>
-                        <button class="btn btn-primary me-2" onclick="app.showExamples()" style="display:none">
+                        <button class="btn btn-primary me-2" onclick="app.showModal('examples.html', 'Примеры работ')">
                             <i class="bi bi-magic me-2"></i>Примеры работ
                         </button> 
                     </div>
