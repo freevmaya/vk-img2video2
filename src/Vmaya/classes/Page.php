@@ -52,6 +52,8 @@ class Page {
 		$page = new $className();
 		$page->Render(Page::$page.(Page::$subpage ? ('/'.Page::$subpage) : ''));
 		$page->Close();
+
+		$dbp->Close();
 	}
 
 	public function __construct() {
@@ -60,32 +62,34 @@ class Page {
 		Page::$current = $this;
 		$dbp = new mySQLProvider('localhost', _dbname_default, _dbuser, _dbpassword);
 
-		$user = Page::getSession('user');
-		if ($user) {
-			//$this->setUser(null); exit;
-			/*
-			if (!isset($user['id'])) {
-				if (DEVUSER)
-					$this->setUser($user = array_merge(json_decode(DEVUSER, true), $user));
+		if (AUTH_REQUIRED) {
+			$user = Page::getSession('user');
+			if ($user) {
+				//$this->setUser(null); exit;
+				/*
+				if (!isset($user['id'])) {
+					if (DEVUSER)
+						$this->setUser($user = array_merge(json_decode(DEVUSER, true), $user));
+				}
+				if (!is_array($db_user = (new UserModel())->getItem($user['id']))) {
+					$this->setUser($user);
+					//trace($user['id']);
+				}*/
 			}
-			if (!is_array($db_user = (new UserModel())->getItem($user['id']))) {
+			else if (DEVUSER) {
+				$user = json_decode(DEVUSER, true);
 				$this->setUser($user);
-				//trace($user['id']);
-			}*/
-		}
-		else if (DEVUSER) {
-			$user = json_decode(DEVUSER, true);
-			$this->setUser($user);
-		}
-		
-		if ($user) {
+			}
+			
+			if ($user) {
 
-			if ($userDB = (new UserModel())->getItem($user['id']))
-				$user = array_merge($user, $userDB);
-			$language = $user['language_code'];
-		} else die("There isn't authorize");
-		
-		include_once(BASEDIR.'/languages/'.$language.'.php');
+				if ($userDB = (new UserModel())->getItem($user['id']))
+					$user = array_merge($user, $userDB);
+				$language = $user['language_code'];
+			} else die("There isn't authorize");
+		} else $language = 'ru';
+			
+		include_once(LANGUAGES_PATH.$language.'.php');
 
 		$this->model = $this->initModel();
 
@@ -204,7 +208,7 @@ class Page {
 	public function Render($page) {
 		header("Content-Type: text/html; charset=".CHARSET);
 		$content = $this->getContent($page);
-		include(TEMPLATES_PATH.'/'."index.php");
+		include(TEMPLATES_PATH.DS."index.php");
 	}
 
 	public function Close() {

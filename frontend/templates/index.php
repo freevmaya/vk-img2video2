@@ -94,6 +94,9 @@
                                 <p class="text-muted">Загрузите фото с вашего устройства</p>
                             </div>
                         </div>
+                        <button class="btn btn-primary me-2" onclick="app.showExamples()" style="display:none">
+                            <i class="bi bi-magic me-2"></i>Примеры работ
+                        </button> 
                     </div>
                     
                     <!-- Область альбома -->
@@ -229,7 +232,12 @@
         $cstyle = intval($item['default']) == 1 ? 'active' : '';
         ?>
         <div class="payment-option <?=$cstyle?>" data-price="<?=$item['price']?>" data-id="<?=$item['id']?>">
-            <h5><?=$item['name']?></h5><small><?=strEnum($item['price'], CURRENCY_PATTERN[$_SESSION['SITE']])?></small></div>
+            <h5><?=$item['name']?></h5>
+            <small>
+                <?=$item['description'] ? '<span>'.$item['description'].'</span>' : ''?>
+                <?=strEnum($item['price'], CURRENCY_PATTERN[$_SESSION['SITE']])?>
+            </small>
+        </div>
         <?
     }
 ?>

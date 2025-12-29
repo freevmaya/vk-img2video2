@@ -572,3 +572,7 @@ video:fullscreen {
     background-color: #0d6efd;
     color: white;
 }
+
+.payment-option span {
+    color: #a9a9a9;
+}

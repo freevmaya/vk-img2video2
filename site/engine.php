@@ -1,7 +1,12 @@
 <?
 
-	include_once(__DIR__ . '/vendor/autoload.php');	
-	include('config.php');	
+	include_once(dirname(__DIR__).'/vendor/autoload.php');	
+	include(dirname(__DIR__).'/site.config.php');
+
+	define('LANGUAGES_PATH', BASEPATH.DS.'site'.DS.'languages'.DS);
+	define('CHARSET', 'UTF-8');
+	define('DEFAULTPAGE', 'home');
+	
 
 	include(INCLUDE_PATH.DS."_edbu2.php");
 	include(INCLUDE_PATH.DS."console.php");
@@ -50,4 +55,8 @@
 	ini_set('session.cookie_samesite', 'None');
 	ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) ? '1' : '0');
 	ini_set('session.cookie_httponly', '1');
+
+	date_default_timezone_set('Europe/Moscow');
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
 ?>

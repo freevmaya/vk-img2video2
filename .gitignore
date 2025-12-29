@@ -12,6 +12,7 @@ sessions/*
 /composer.lock
 test*.*
 config.*
+*.config.*
 downloads
 combined.txt
 
