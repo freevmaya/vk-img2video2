@@ -310,7 +310,19 @@ class Image2VideoApp {
     }
 
     watchVideo(blockId) {
-        let videoElem = $(`#${blockId}`).find('video');
+
+        let preview = $(`#${blockId}`);
+        let videoElem = preview.find('video');
+        let ids = blockId.split('-');
+
+        if (videoElem.length == 0) {
+            videoElem = $(`<video controls="" class="w-100 hide">
+                            <source src="${this.getVideoUrl(ids[1])}" type="video/mp4">
+                            Ваш браузер не поддерживает видео.
+                        </video>`)
+            preview.find('.video-preview').append(videoElem);
+        }
+
         let video = videoElem[0];
 
         if (video.requestFullscreen) {
@@ -325,17 +337,6 @@ class Image2VideoApp {
 
         videoElem.show();
         video.play();
-
-        /*
-        const overlay = $('<div>', {
-            id: 'fullscreenOverlay',
-            class: 'fullscreenOverlay',
-            html: '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>'
-        });
-
-
-        $('body').append(overlay);
-        */
     }
 
     // Показ результата видео
@@ -359,10 +360,6 @@ class Image2VideoApp {
                     <div class="video-preview">
                         <div class="bi bi-play-circle" style="background-image: url(${thumbnail_url})" onclick="app.watchVideo('${block_id}')">
                         </div>
-                        <video controls class="w-100 hide">
-                            <source src="${url}" type="video/mp4">
-                            Ваш браузер не поддерживает видео.
-                        </video>
                     </div>
                     <div class="p-3">
                         <div class="video-info">

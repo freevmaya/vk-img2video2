@@ -314,6 +314,11 @@ select option {
 .video-preview video {
     width: 100%;
     height: 100%;
+    display: none;
+}
+
+.video-preview source {
+    display: none;
 }
 
 .video-preview img {
