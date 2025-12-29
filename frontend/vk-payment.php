@@ -80,12 +80,14 @@ function logPayment($message, $isError = false) {
     }
 }
 
-function get_error_response($text='Неизвестная ошибка') {
+function get_error_response($text='Неизвестная ошибка', $code = 20) {
     return [
-        "error_code" => 20,
-        "error_msg" => $text,
-        "critical" => true
-    ];
+            "error" => [
+                'error_code'=>$code,
+                'error_msg'=>$text,
+                "critical" => true
+            ]
+        ];
 }
 
 class PaymentProcess {
@@ -122,7 +124,7 @@ class PaymentProcess {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             logPayment('Недопустимый метод запроса: ' . $_SERVER['REQUEST_METHOD'], true);
-            return json_encode(['error' => 'Method Not Allowed']);
+            return json_encode(get_error_response('Method Not Allowed'));
         }
         
         // Парсим данные
@@ -172,7 +174,7 @@ class PaymentProcess {
             http_response_code(200);
             logPayment("Result: ". json_encode($result, JSON_FLAGS));
         } else {
-            $result = array_merge(get_error_response(), $wrong_result);
+            $result = $wrong_result;
             logPayment("Result: ". json_encode($result, JSON_FLAGS), true);
         }
         return json_encode($result);
@@ -185,19 +187,19 @@ class PaymentProcess {
         foreach ($requiredParams as $param) {
             if (!isset($data[$param])) {
                 http_response_code(400);
-                return ['error_msg' => "Missing required parameter: {$param}", 'error_code' => 11];
+                return get_error_response("Missing required parameter: {$param}", 11);
             }
         }
         
         // Проверяем подпись
         if (!verifyVKSignature($data)) {
             http_response_code(403);
-            return ['error_msg' => 'Invalid signature', 'error_code' => 10];
+            return get_error_response("Invalid signature", 10);
         }
 
         if ($data['app_id'] != APP_ID['vk']) {
             http_response_code(403);
-            return ['error_msg' => 'Invalid app_id', 'error_code' => 11];
+            return get_error_response("Invalid app_id", 11);
         }
 
         return false;
