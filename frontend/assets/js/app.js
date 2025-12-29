@@ -252,6 +252,43 @@ class Image2VideoApp {
         }, waitSec * 1000);
     }
 
+    payOrderBox() {
+       vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
+                type: 'item', // Всегда должно быть 'item'
+                item: 'one'
+            })
+            .then((data) => {
+                if (data.success) 
+                    this.continueGenerateVideo();
+                else this.waitPaymentAndGenerate(20);
+            })
+            .catch((error) => {
+                console.error('Payment error:', error);
+                // Если ошибка при платеже, ждем уведомление о платеже 20 сек.
+                this.waitPaymentAndGenerate(20);
+            }); 
+    }
+
+    payVPay() {
+       vkBridgeHandler.bridge.send('VKWebAppOpenPayForm', {
+                app_id: APP_ID,
+                action: 'pay-to-service',
+                params: {
+                  user_id: vkBridgeHandler.user.id
+                }})
+            })
+            .then((data) => {
+                if (data.success) 
+                    this.continueGenerateVideo();
+                else this.waitPaymentAndGenerate(20);
+            })
+            .catch((error) => {
+                console.error('Payment error:', error);
+                // Если ошибка при платеже, ждем уведомление о платеже 20 сек.
+                this.waitPaymentAndGenerate(20);
+            }); 
+    }
+
     // Генерация видео
     generateVideo() {
         if (!this.selectedImage) {
@@ -267,24 +304,9 @@ class Image2VideoApp {
 
         if (ISDEV || (this.subscription.isActualy() && (this.subscription.remainedTasks() > 0)))
             this.continueGenerateVideo();
-        else if (vkBridgeHandler.isInVK()) {
-
-            vkBridgeHandler.bridge.send('VKWebAppShowOrderBox', {
-                    type: 'item', // Всегда должно быть 'item'
-                    item: 'one'
-                })
-                .then((data) => {
-                    if (data.success) 
-                        this.continueGenerateVideo();
-                    else this.waitPaymentAndGenerate(20);
-                })
-                .catch((error) => {
-                    console.error('Payment error:', error);
-                    // Если ошибка при платеже, ждем уведомление о платеже 20 сек.
-                    this.waitPaymentAndGenerate(20);
-                });
-
-        } else vkBridgeHandler.showNotification('Оплата доступна только в приложении', 'warning');
+        else if (vkBridgeHandler.isInVK())
+            this.payVPay();
+        else vkBridgeHandler.showNotification('Оплата доступна только в приложении', 'warning');
     }
 
     // Добавление задачи в список
