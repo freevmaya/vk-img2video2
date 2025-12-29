@@ -275,7 +275,7 @@ class Image2VideoApp {
                 action: 'pay-to-service',
                 params: {
                   user_id: vkBridgeHandler.user.id
-                }})
+                }
             })
             .then((data) => {
                 if (data.success) 
