@@ -12,6 +12,30 @@ class SubscribeOptions extends BaseModel {
 		else return $dbp->asArray("SELECT * FROM {$this->getTable()}");
 	}
 
+	public function ByActualy($user = null) {
+		GLOBAL $dbp;
+
+		$list = $dbp->asArray("SELECT * FROM {$this->getTable()}");
+		if ($user) {
+			
+			$lastSubscription = $dbp->asArray("SELECT so.id FROM vk_subscription s INNER JOIN subscribe_options so ON so.id = s.sub_id WHERE so.trial_duration > 0");
+
+			$ids = [];
+			foreach ($lastSubscription as $ls)
+				$ids[] = $ls['id'];
+
+			$result = [];
+			foreach ($list as $subItem) {
+				if (in_array($subItem['id'], $ids) === false)
+					$result[] = $subItem;
+			}
+
+			$list = $result;
+		}
+		
+		return $list;
+	}
+
 	public static function GetPrice($userId, $limitName='image_limit') {
 		GLOBAL $dbp;
 

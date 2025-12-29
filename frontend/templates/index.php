@@ -227,7 +227,7 @@
                 <div class="modal-body">
                     <div class="payment-options">
 <?
-    $list = (new SubscribeOptions())->ByArea();
+    $list = (new SubscribeOptions())->ByActualy($user);
     foreach ($list as $item) {
         $cstyle = intval($item['default']) == 1 ? 'active' : '';
         ?>
